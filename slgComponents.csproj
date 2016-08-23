@@ -16,7 +16,7 @@
     <RootNamespace>slgComponents</RootNamespace>
     <AssemblyName>slgComponents</AssemblyName>
     <TargetFrameworkVersion>v4.6.1</TargetFrameworkVersion>
-    <UseIISExpress>true</UseIISExpress>
+    <UseIISExpress>false</UseIISExpress>
     <IISExpressSSLPort />
     <IISExpressAnonymousAuthentication />
     <IISExpressWindowsAuthentication />
@@ -91,7 +91,7 @@
           <AutoAssignPort>True</AutoAssignPort>
           <DevelopmentServerPort>50048</DevelopmentServerPort>
           <DevelopmentServerVPath>/</DevelopmentServerVPath>
-          <IISUrl>http://localhost:50048/</IISUrl>
+          <IISUrl>http://localhost:27560</IISUrl>
           <NTLMAuthentication>False</NTLMAuthentication>
           <UseCustomServer>False</UseCustomServer>
           <CustomServerUrl>
