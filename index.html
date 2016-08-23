@@ -1,0 +1,46 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+	<title>slgComponents Main</title>
+	<link href="/node_modules/bootstrap/dist/css/bootstrap.css" rel="stylesheet" />
+	<link href="content/slgButtonSpinner.css" rel="stylesheet" />
+</head>
+<body ng-app="slgComponentsApp" ng-strict-di>
+	<div class="container">
+		<div ng-controller="slgButtonSpinnerTestCtrl" class="well">
+			<button class="btn btn-primary btn-xs slg-button-spinner" slg-button-spinner="isLoading1" ng-click="isLoading1 = !isLoading1" slg-button-spinner-delay="300">This is a test</button>
+			<button class="btn btn-primary btn-sm slg-button-spinner" slg-button-spinner="isLoading2" slg-button-spinner-delay="300">This is a test</button>
+			<button class="btn btn-primary slg-button-spinner" slg-button-spinner="isLoading3" slg-button-spinner-delay="300">This is a test</button>
+			<button class="btn btn-primary btn-lg btn slg-button-spinner" slg-button-spinner="isLoading4" slg-button-spinner-delay="300">This is a test</button>
+		</div>
+	</div>
+
+	<script src="//cdnjs.cloudflare.com/ajax/libs/angular.js/1.5.8/angular.js"></script>
+	<script src="scripts/slgComponents.js"></script>
+	<script src="scripts/slgSpinner.js"></script>
+	<script src="scripts/slgButtonSpinner.js"></script>
+
+	<script>
+		var app = angular.module('slgComponentsApp', [
+            'slgComponents'
+		]);
+
+		app.controller('slgButtonSpinnerTestCtrl', ['$scope', '$timeout', function ($scope, $timeout) {
+			$scope.isLoading = false;
+
+			$timeout(function () {
+				$scope.isLoading = true;
+
+				//$timeout(function () {
+				//    $scope.isLoading = false;
+
+				//    $timeout(function () {
+				//        $scope.isLoading = true;
+				//    }, 1500);
+
+				//}, 1500);
+			}, 500)
+		}]);
+	</script>
+</body>
+</html>
