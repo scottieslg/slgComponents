@@ -9,9 +9,9 @@
 	<div class="container">
 		<div ng-controller="slgButtonSpinnerTestCtrl" class="well">
 			<button class="btn btn-primary btn-xs slg-button-spinner" slg-button-spinner="isLoading1" ng-click="isLoading1 = !isLoading1" slg-button-spinner-delay="300">This is a test</button>
-			<button class="btn btn-primary btn-sm slg-button-spinner" slg-button-spinner="isLoading2" slg-button-spinner-delay="300">This is a test</button>
-			<button class="btn btn-primary slg-button-spinner" slg-button-spinner="isLoading3" slg-button-spinner-delay="300">This is a test</button>
-			<button class="btn btn-primary btn-lg btn slg-button-spinner" slg-button-spinner="isLoading4" slg-button-spinner-delay="300">This is a test</button>
+			<button class="btn btn-primary btn-sm slg-button-spinner" slg-button-spinner="isLoading2" ng-click="isLoading2 = !isLoading2" slg-button-spinner-delay="300">This is a test</button>
+			<button class="btn btn-primary slg-button-spinner" slg-button-spinner="isLoading3" ng-click="isLoading3 = !isLoading3" slg-button-spinner-delay="300">This is a test</button>
+			<button class="btn btn-primary btn-lg btn slg-button-spinner" slg-button-spinner="isLoading4" ng-click="isLoading4 = !isLoading4" slg-button-spinner-delay="300">This is a test</button>
 		</div>
 	</div>
 
@@ -29,7 +29,7 @@
 			$scope.isLoading = false;
 
 			$timeout(function () {
-				$scope.isLoading = true;
+				$scope.isLoading1 = true;
 
 				//$timeout(function () {
 				//    $scope.isLoading = false;

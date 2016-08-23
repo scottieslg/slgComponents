@@ -67,14 +67,17 @@
   <ItemGroup>
     <Content Include="content\bootstrap.css" />
     <Content Include="content\slgButtonSpinner.css" />
+    <Content Include="gulpfile.js" />
     <Content Include="index.html" />
     <Content Include="scripts\slgButtonSpinner.js" />
     <Content Include="scripts\slgComponents.js" />
     <Content Include="scripts\slgSpinner.js" />
   </ItemGroup>
-  <ItemGroup />
   <ItemGroup>
     <Content Include="package.json" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="npm\package.json" />
   </ItemGroup>
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>

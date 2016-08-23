@@ -1,0 +1,8 @@
+{
+  "version": "0.0.1",
+  "name": "slgComponents",
+  "private": false,
+  "dependencies": {
+    "bootstrap": "^3.3.0"
+  }
+}
