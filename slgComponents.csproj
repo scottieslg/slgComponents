@@ -67,10 +67,12 @@
   <ItemGroup>
     <Content Include="content\bootstrap.css" />
     <Content Include="content\slgButtonSpinner.css" />
+    <Content Include="content\slgPleaseWait.css" />
     <Content Include="gulpfile.js" />
     <Content Include="index.html" />
     <Content Include="scripts\slgButtonSpinner.js" />
     <Content Include="scripts\slgComponents.js" />
+    <Content Include="scripts\slgPleaseWait.js" />
     <Content Include="scripts\slgSpinner.js" />
   </ItemGroup>
   <ItemGroup>

@@ -36,21 +36,24 @@
                     var opts = {
                         radius: 3,
                         length: 3,
-                        width: 1
+                        width: 1,
+                        color: "#fff"
                     }
                 }
                 else if (height <= 14) {
                     var opts = {
                         radius: 4,
                         length: 4,
-                        width: 2
+                        width: 2,
+                        color: "#fff"
                     }
                 }
                 else {
                     var opts = {
                         radius: 5,
                         length: 5,
-                        width: 3
+                        width: 3,
+                        color: "#fff"
                     }
                 }
                 var spinner = new slgSpinner(opts).spin(target);

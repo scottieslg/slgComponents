@@ -177,7 +177,7 @@ merge(slgSpinner.prototype, {
         i++;
         for (var s=o.lines; s; s--) {
           var alpha = Math.max(1-(i+s*astep)%f * ostep, o.opacity);
-          self.opacity(el, o.lines-s, alpha, o);
+          self.opacity(el, o.lines - s, alpha, o);
         }
         self.timeout = self.el && setTimeout(anim, ~~(1000/fps));
       }();

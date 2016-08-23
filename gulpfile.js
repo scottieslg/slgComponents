@@ -9,7 +9,11 @@ var debug = require('gulp-debug');
 gulp.task('default', ['js', 'css']);
 
 gulp.task('js', function () {
-    return gulp.src(['scripts/slgSpinner.js', 'scripts/slgComponents.js', 'scripts/slgButtonSpinner.js'])
+    return gulp.src([
+        'scripts/slgSpinner.js',
+        'scripts/slgComponents.js',
+        'scripts/slgButtonSpinner.js',
+        'scripts/slgPleaseWait.js'])
 		.pipe(sourcemaps.init())
 		.pipe(uglify())
         .pipe(rename('slgComponents.min.js'))
@@ -18,7 +22,8 @@ gulp.task('js', function () {
 });
 
 gulp.task('css', function () {
-    return gulp.src(['content/slgButtonSpinner.css'])
+    return gulp.src(['content/slgButtonSpinner.css',
+        'content/slgPleaseWait.css'])
 		.pipe(uglifycss())
         .pipe(rename('slgComponents.min.css'))
 		.pipe(gulp.dest('npm/dist/css'))
