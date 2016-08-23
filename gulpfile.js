@@ -23,7 +23,8 @@ gulp.task('js', function () {
 });
 
 gulp.task('css', function () {
-    return gulp.src(['content/slgButtonSpinner.css',
+	return gulp.src(['content/slgComponents.css',
+		'content/slgButtonSpinner.css',
         'content/slgPleaseWait.css'])
 		.pipe(concat('slgComponents.min.css'))
 		.pipe(uglifycss())

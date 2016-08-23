@@ -3,11 +3,21 @@
 <head>
 	<title>slgComponents Main</title>
 	<link href="/node_modules/bootstrap/dist/css/bootstrap.css" rel="stylesheet" />
+	<!--<link href="content/bootstrap-overrides.css" rel="stylesheet" />-->
+	<link href="content/slgComponents.css" rel="stylesheet" />
 	<link href="content/slgButtonSpinner.css" rel="stylesheet" />
 	<link href="content/slgPleaseWait.css" rel="stylesheet" />
+	<link href="content/slgScrollableView.css" rel="stylesheet" />
+	<link href="content/slgDropdown.css" rel="stylesheet" />
+
+	<style>
+		[ng\:cloak], [ng-cloak], [data-ng-cloak], [x-ng-cloak], .ng-cloak, .x-ng-cloak {
+			display: none !important;
+		}
+	</style>
 </head>
 <body ng-app="slgComponentsApp" ng-strict-di>
-	<div class="container">
+	<div class="container" ng-cloak>
 		<div ng-controller="slgButtonSpinnerTestCtrl" class="well">
 			The button spinner will show a visual indicator that something is happening.<br />
 			<br />
@@ -18,7 +28,7 @@
 			<button class="btn btn-primary btn-xs slg-button-spinner" slg-button-spinner="isLoadingXS" ng-click="isLoadingXS = !isLoadingXS">Button XS</button>
 			<button class="btn btn-primary btn-sm slg-button-spinner" slg-button-spinner="isLoadingSM" ng-click="isLoadingSM = !isLoadingSM">Button MD</button>
 			<button class="btn btn-primary slg-button-spinner" slg-button-spinner="isLoading" ng-click="isLoading = !isLoading">Button Normal</button>
-			<button class="btn btn-primary btn-lg btn slg-button-spinner" slg-button-spinner="isLoadingLG" ng-click="isLoadingLG = !isLoadingLG">Button LG</button>
+			<button class="btn btn-primary btn-lg btn slg-button-spinner" style="width: 200px" slg-button-spinner="isLoadingLG" ng-click="isLoadingLG = !isLoadingLG">Button LG</button>
 		</div>
 		<div ng-controller="slgPleaseWaitTestCtrl" class="well">
 			The showPleaseWait component will render an gray overlay with a spinner that prevents any user action on the page.<br />
@@ -43,13 +53,40 @@
 			<button class="btn btn-primary" ng-click="showForcePleaseWait()">Show Force Please Wait</button>
 			<button class="btn btn-primary" ng-click="showPleaseWaitWithForceStop()">Show Please Wait With Force Stop</button>
 		</div>
+		<div ng-controller="slgScrollableViewTestCtrl" class="well">
+			The scrollabelView is a simple list that can be scrolled by using the keyboard or the mouse.<br />
+			It will automatically scroll into view whatever value is passed, if found.<br />
+			<br />
+			<div style="width: 400px">
+				Selected model: {{selectedModel}}<br />
+				<slg-scrollable-view ng-model="selectedModel"
+									 items="items">
+				</slg-scrollable-view>
 
+			</div>
+		</div>
+
+		<div ng-controller="slgDropdownTestCtrl" class="well">
+			The dropdown component will acts as a typical dropdown, with a few nice features.<br />
+			<br />
+			<div style="width: 400px">
+				Selected Id: {{id}}<br />
+				Selected Text: {{selectedText}}
+				<slg-dropdown ng-model="id"
+							  placeholder="-- Select --"
+							  items="items"
+							  selected-text="selectedText">
+				</slg-dropdown>
+			</div>
+		</div>
 	</div>
 	<script src="//cdnjs.cloudflare.com/ajax/libs/angular.js/1.5.8/angular.js"></script>
 	<script src="scripts/slgComponents.js"></script>
 	<script src="scripts/slgSpinner.js"></script>
 	<script src="scripts/slgButtonSpinner.js"></script>
 	<script src="scripts/slgPleaseWait.js"></script>
+	<script src="scripts/slgScrollableView.js"></script>
+	<script src="scripts/slgDropdown.js"></script>
 
 	<script>
 		var app = angular.module('slgComponentsApp', [
@@ -96,6 +133,25 @@
 
 			}
 		}]);
+
+		app.controller('slgScrollableViewTestCtrl', ['$scope', '$timeout', function ($scope, $timeout) {
+			$scope.items = [
+				{ id: '1', text: 'One', someOtherVal: 'Blarg' },
+				{ id: '2', text: 'Two', someOtherVal: 'Bloog' },
+				{ id: '3', text: 'Three', someOtherVal: 'Blerf' },
+				{ id: '4', text: 'Four', someOtherVal: 'Blam' }
+			]
+		}]);
+
+		app.controller('slgDropdownTestCtrl', ['$scope', '$timeout', function ($scope, $timeout) {
+			$scope.items = [
+				{ id: '1', text: 'One' },
+				{ id: '2', text: 'Two' },
+				{ id: '3', text: 'Three' },
+				{ id: '4', text: 'Four' }
+			]
+		}]);
+
 	</script>
 </body>
 
