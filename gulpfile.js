@@ -4,6 +4,7 @@ var uglifycss = require('gulp-uglifycss');
 var rename = require('gulp-rename');
 var sourcemaps = require('gulp-sourcemaps');
 var debug = require('gulp-debug');
+var concat = require('gulp-concat');
 
 
 gulp.task('default', ['js', 'css']);
@@ -14,9 +15,9 @@ gulp.task('js', function () {
         'scripts/slgComponents.js',
         'scripts/slgButtonSpinner.js',
         'scripts/slgPleaseWait.js'])
+		.pipe(concat('slgComponents.min.js'))
 		.pipe(sourcemaps.init())
 		.pipe(uglify())
-        .pipe(rename('slgComponents.min.js'))
 		.pipe(sourcemaps.write('./'))
 		.pipe(gulp.dest('npm/dist/js'))
 });
@@ -24,7 +25,7 @@ gulp.task('js', function () {
 gulp.task('css', function () {
     return gulp.src(['content/slgButtonSpinner.css',
         'content/slgPleaseWait.css'])
+		.pipe(concat('slgComponents.min.css'))
 		.pipe(uglifycss())
-        .pipe(rename('slgComponents.min.css'))
 		.pipe(gulp.dest('npm/dist/css'))
 });

@@ -70,6 +70,7 @@
     <Content Include="content\slgPleaseWait.css" />
     <Content Include="gulpfile.js" />
     <Content Include="index.html" />
+    <Content Include="npmindex.html" />
     <Content Include="scripts\slgButtonSpinner.js" />
     <Content Include="scripts\slgComponents.js" />
     <Content Include="scripts\slgPleaseWait.js" />

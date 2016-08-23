@@ -1,0 +1,98 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+	<title>slgComponents Main</title>
+	<link href="node_modules/bootstrap/dist/css/bootstrap.css" rel="stylesheet" />
+	<link href="npm/dist/css/slgComponents.min.css" rel="stylesheet" />
+</head>
+<body ng-app="slgComponentsApp" ng-strict-di>
+	<div class="container">
+		<div ng-controller="slgButtonSpinnerTestCtrl" class="well">
+			The button spinner will show a visual indicator that something is happening.<br />
+			<br />
+			The slg-button-spinner attribute will be used to declare which scope variable will be used to show/hide the spinner.<br />
+			A value of true will show the spinner, false will hide it.<br />
+			<br />
+
+			<button class="btn btn-primary btn-xs slg-button-spinner" slg-button-spinner="isLoadingXS" ng-click="isLoadingXS = !isLoadingXS">Button XS</button>
+			<button class="btn btn-primary btn-sm slg-button-spinner" slg-button-spinner="isLoadingSM" ng-click="isLoadingSM = !isLoadingSM">Button MD</button>
+			<button class="btn btn-primary slg-button-spinner" slg-button-spinner="isLoading" ng-click="isLoading = !isLoading">Button Normal</button>
+			<button class="btn btn-primary btn-lg btn slg-button-spinner" slg-button-spinner="isLoadingLG" ng-click="isLoadingLG = !isLoadingLG">Button LG</button>
+		</div>
+		<div ng-controller="slgPleaseWaitTestCtrl" class="well">
+			The showPleaseWait component will render an gray overlay with a spinner that prevents any user action on the page.<br />
+			<br />
+			The service will wait a default of 300ms before showing the overlay.  You can override this by passing a value into the .show().<br />
+			It will also timeout after 20 seconds and return to a non-overlayed status.  If you don't want a timeout, use forceShow and forceHide.<br />
+
+			<br />
+			Usage:<br />
+			app.controller('slgPleaseWaitTestCtrl', ['$scope', '$timeout', 'slgPleaseWaitSvc', function ($scope, $timeout, slgPleaseWaitSvc) {<br />
+			&ensp;&ensp;&ensp;$scope.showPleaseWait = function () {<br />
+			&ensp;&ensp;&ensp;&ensp;&ensp;&ensp;slgPleaseWaitSvc.show();<br />
+			<br />
+			&ensp;&ensp;&ensp;&ensp;&ensp;&ensp;$timeout(function() {<br />
+			&ensp;&ensp;&ensp;&ensp;&ensp;&ensp;&ensp;&ensp;&ensp;slgPleaseWaitSvc.hide();<br />
+			&ensp;&ensp;&ensp;&ensp;&ensp;&ensp;}, 5000)<br />
+			&ensp;&ensp;&ensp;}<br />
+			}]);<br />
+			<br />
+
+			<button class="btn btn-primary" ng-click="showPleaseWait()">Show Please Wait</button>
+			<button class="btn btn-primary" ng-click="showForcePleaseWait()">Show Force Please Wait</button>
+			<button class="btn btn-primary" ng-click="showPleaseWaitWithForceStop()">Show Please Wait With Force Stop</button>
+		</div>
+
+	</div>
+	<script src="//cdnjs.cloudflare.com/ajax/libs/angular.js/1.5.8/angular.js"></script>
+	<script src="npm/dist/js/slgComponents.min.js"></script>
+
+	<script>
+		var app = angular.module('slgComponentsApp', [
+            'slgComponents'
+		]);
+
+		app.controller('slgButtonSpinnerTestCtrl', ['$scope', '$timeout', function ($scope, $timeout) {
+		}]);
+
+		app.controller('slgPleaseWaitTestCtrl', ['$scope', '$timeout', 'slgPleaseWaitSvc', function ($scope, $timeout, slgPleaseWaitSvc) {
+			$scope.showPleaseWait = function () {
+				slgPleaseWaitSvc.show();
+
+				$timeout(function () {
+					slgPleaseWaitSvc.show();
+
+					$timeout(function () {
+						slgPleaseWaitSvc.hide();
+					}, 1000);
+
+				}, 1000)
+
+				$timeout(function () {
+					slgPleaseWaitSvc.hide();
+				}, 5000)
+			}
+
+			$scope.showForcePleaseWait = function () {
+				slgPleaseWaitSvc.forceShow();
+
+				$timeout(function () {
+					slgPleaseWaitSvc.forceHide();
+				}, 5000)
+			}
+
+			$scope.showPleaseWaitWithForceStop = function () {
+				slgPleaseWaitSvc.show();
+				slgPleaseWaitSvc.show();
+				slgPleaseWaitSvc.show();
+
+				$timeout(function () {
+					slgPleaseWaitSvc.forceHide();
+				}, 5000)
+
+			}
+		}]);
+	</script>
+</body>
+
+</html>
