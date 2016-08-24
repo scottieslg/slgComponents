@@ -1,4 +1,4 @@
-﻿.slgButtonSpinner-Spinner {
+﻿.slgButtonSpinner_spinner {
     width: 0;
     min-width: 0;
     height: 0;
@@ -9,3 +9,20 @@
     display: none;
 }
 
+.slgButtonSpinner_check {
+	color: #00ff21;	
+	width: 1em;
+	height: 1em;
+	background: red;
+	float: right;
+	margin-left: 10px;
+	position: fixed;
+	display: none;
+
+}
+
+.slgButtonSpinner_error {
+	color: #aa0000;
+	position: relative;
+	display: none;
+}

@@ -1,8 +1,9 @@
 {
-  "version": "0.0.2",
-  "name": "slgComponents",
-  "private": false,
-  "dependencies": {
-    "bootstrap": "^3.3.0"
-  }
+	"version": "0.0.2",
+	"name": "slgComponents",
+	"private": false,
+	"dependencies": {
+		"bootstrap": "^3.3.0",
+		"font-awesome": "^4.6.0"
+	}
 }

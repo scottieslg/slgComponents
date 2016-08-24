@@ -2,6 +2,7 @@
 <html>
 <head>
 	<title>slgComponents Main</title>
+	<link href="content/font-awesome.css" rel="stylesheet" />
 	<link href="/node_modules/bootstrap/dist/css/bootstrap.css" rel="stylesheet" />
 	<!--<link href="content/bootstrap-overrides.css" rel="stylesheet" />-->
 	<link href="content/slgComponents.css" rel="stylesheet" />
@@ -19,16 +20,17 @@
 <body ng-app="slgComponentsApp" ng-strict-di>
 	<div class="container" ng-cloak>
 		<div ng-controller="slgButtonSpinnerTestCtrl" class="well">
+			<i style="color: green" class="fa fa-cro"></i><br />
 			The button spinner will show a visual indicator that something is happening.<br />
 			<br />
 			The slg-button-spinner attribute will be used to declare which scope variable will be used to show/hide the spinner.<br />
 			A value of true will show the spinner, false will hide it.<br />
 			<br />
 
-			<button class="btn btn-primary btn-xs slg-button-spinner" slg-button-spinner="isLoadingXS" ng-click="isLoadingXS = !isLoadingXS">Button XS</button>
-			<button class="btn btn-primary btn-sm slg-button-spinner" slg-button-spinner="isLoadingSM" ng-click="isLoadingSM = !isLoadingSM">Button MD</button>
-			<button class="btn btn-primary slg-button-spinner" slg-button-spinner="isLoading" ng-click="isLoading = !isLoading">Button Normal</button>
-			<button class="btn btn-primary btn-lg btn slg-button-spinner" style="width: 200px" slg-button-spinner="isLoadingLG" ng-click="isLoadingLG = !isLoadingLG">Button LG</button>
+			<button class="btn btn-primary btn-xs" slg-button-spinner="isLoadingXS" slg-button-spinner-error="isLoadingXSErrorMessage" ng-click="isLoadingXS = !isLoadingXS">Button XS</button>
+			<button class="btn btn-primary btn-sm" slg-button-spinner="isLoadingSM" ng-click="isLoadingSM = !isLoadingSM">Button MD</button>
+			<button class="btn btn-primary" slg-button-spinner="isLoading" ng-click="quickChangeTest()">Button Normal</button>
+			<button class="btn btn-primary btn-lg btn" style="width: 200px" slg-button-spinner="isLoadingLG" ng-click="isLoadingLG = !isLoadingLG">Button LG</button>
 		</div>
 		<div ng-controller="slgPleaseWaitTestCtrl" class="well">
 			The showPleaseWait component will render an gray overlay with a spinner that prevents any user action on the page.<br />
@@ -94,6 +96,13 @@
 		]);
 
 		app.controller('slgButtonSpinnerTestCtrl', ['$scope', '$timeout', function ($scope, $timeout) {
+			$scope.quickChangeTest = function () {
+				$scope.isLoading = true;
+
+				$timeout(function () {
+					$scope.isLoading = false;
+				}, 900);
+			}
 		}]);
 
 		app.controller('slgPleaseWaitTestCtrl', ['$scope', '$timeout', 'slgPleaseWaitSvc', function ($scope, $timeout, slgPleaseWaitSvc) {

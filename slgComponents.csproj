@@ -68,10 +68,12 @@
     <Content Include="content\bootstrap-overrides.css" />
     <Content Include="content\bootstrap-theme.css" />
     <Content Include="content\bootstrap.css" />
+    <Content Include="content\font-awesome.css" />
     <Content Include="content\slgButtonSpinner.css" />
     <Content Include="content\slgDropdown.css" />
     <Content Include="content\slgPleaseWait.css" />
     <Content Include="content\slgScrollableView.css" />
+    <Content Include="fonts\fontawesome-webfont.svg" />
     <Content Include="gulpfile.js" />
     <Content Include="index.html" />
     <Content Include="npmindex.html" />
@@ -88,6 +90,13 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="npm\package.json" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="fonts\fontawesome-webfont.eot" />
+    <Content Include="fonts\fontawesome-webfont.ttf" />
+    <Content Include="fonts\fontawesome-webfont.woff" />
+    <Content Include="fonts\fontawesome-webfont.woff2" />
+    <Content Include="fonts\FontAwesome.otf" />
   </ItemGroup>
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>

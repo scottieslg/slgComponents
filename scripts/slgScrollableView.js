@@ -34,8 +34,6 @@
 						text: i[$scope.textFieldName]
 					})
 				})
-
-				console.log($scope.visibleItems);
 			});
 
 			$scope.onMouseOut = function () {
