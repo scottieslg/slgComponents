@@ -83,7 +83,6 @@
     <Content Include="scripts\slgDropdown.js" />
     <Content Include="scripts\slgPleaseWait.js" />
     <Content Include="scripts\slgScrollableView.js" />
-    <Content Include="scripts\slgSpinner.js" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="package.json" />

@@ -1,98 +1,58 @@
-﻿angular.module('slgComponents')
+angular.module('slgComponents')
 .directive('slgButtonSpinner', ['$timeout', '$interval', '$q', function ($timeout, $interval, $q) {
 	return {
-		restrict: 'A',
+		restrict: 'EA',
 		scope: {},
 		link: function (scope, element, attr) {
 			scope.expanded = false;
 			scope.inProcess = false;
 			scope.showSuccessIndicator = true;
-			scope.errorFieldName = null;
 
 			element.append(angular.element("<div id='slgButtonSpinner_spinner_" + scope.$id + "' class='slgButtonSpinner_spinner'></div>"));
 			element.append(angular.element("<div id='slgButtonSpinner_check_" + scope.$id + "' class='slgButtonSpinner_check'><i class='fa fa-check-circle-o'></i></div>"));
 			element.append(angular.element("<div id='slgButtonSpinner_error_" + scope.$id + "' class='slgButtonSpinner_error'><i class='fa fa-times-circle-o'></i></div>"));
 
-			scope.$watch('$parent.' + attr["slgButtonSpinner"], function (newVal, oldVal) {
-				if (oldVal === newVal)
-					return;
-
-				if (newVal === true) {
-					element[0].disabled = true;
-
-					scope.waitToShowSpinner = $timeout(function () {
-						expand().then(function () {
-							showSpinner();
-						})
-					}, 100)
-				}
-				else if (newVal === false) {
-					$timeout.cancel(scope.waitToShowSpinner);
-					hideSpinner();
-
-					element[0].disabled = false;
-
-					if (scope.$parent[attr["slgButtonSpinnerError"]])
+			if (attr["slgButtonSpinner"]) {
+				scope.$watch('$parent.' + attr["slgButtonSpinner"], function (newVal, oldVal) {
+					if (oldVal === newVal)
 						return;
 
-					if (scope.showSuccessIndicator === false) {
-						collapse();
+					if (newVal === true) {
+						scope.waitToShowSpinner = $timeout(function () {
+							expand().then(function () {
+								showSpinner();
+							})
+						}, 100)
 					}
-					else {
-						var okCheckDiv = document.getElementById("slgButtonSpinner_check_" + scope.$id);
-						okCheckDiv.style.display = "inline-block";
+					else if (newVal === false) {
+						$timeout.cancel(scope.waitToShowSpinner);
+						hideSpinner();
 
-
-						scope.okTimeout = $timeout(function () {
-							var okCheckDiv = document.getElementById("slgButtonSpinner_check_" + scope.$id);
-							okCheckDiv.style.display = "none";
+						if (scope.showSuccessIndicator === false) {
 							collapse();
-						}, 3000);	
-					}
-				}
-			});
+						}
+						else {
+							//var spinnerDiv = document.getElementById("slgButtonSpinner_check_" + scope.$id);
+							//var checkWidth = parseInt(slgGetStyle(spinnerDiv, "width").replace("px", ""));
+							//var padding = parseInt(slgGetStyle(element[0], "padding-right").replace("px", ""));
+							//var newPadding = padding - checkWidth;
+							//console.log(checkWidth, padding, newPadding);
+							//element[0].style.paddingRight = newPadding;
+							//spinnerDiv.style.display = "inline-block";
+							var spinnerDiv = document.getElementById("slgButtonSpinner_check_" + scope.$id);
+							spinnerDiv.style.display = "inline-block";
 
-			if (attr['slgButtonSpinnerError']) {
-
-				scope.$watch('$parent.' + attr["slgButtonSpinnerError"], function (newVal, oldVal) {
-					if (oldVal === undefined && newVal === undefined)
-						return;
-
-					if (!newVal)
-						return;
-
-					hideSpinner();
-					element[0].disabled = false;
-
-					if (!scope.$parent[attr["slgButtonSpinnerError"]]) {
-						var errorDiv = document.getElementById("slgButtonSpinner_error_" + scope.$id);
-						errorDiv.style.display = "none";
-						collapse();
-					}
-					else {
-						$timeout.cancel(scope.okTimeout);
-						var okCheckDiv = document.getElementById("slgButtonSpinner_check_" + scope.$id);
-						okCheckDiv.style.display = "none";
-
-						var errorDiv = document.getElementById("slgButtonSpinner_error_" + scope.$id);
-						errorDiv.style.display = "inline-block";
-
-						scope.$parent[attr["slgButtonSpinner"]] = false;
+							//$timeout(function () {
+							//	var spinnerDiv = document.getElementById("slgButtonSpinner_check_" + scope.$id);
+							//	spinnerDiv.style.display = "none";
+							//	collapse();
+							//}, 3000);	
+						}
 					}
 				});
 			}
 
 			function expand() {
-				$timeout.cancel(scope.okTimeout);
-				var okCheckDiv = document.getElementById("slgButtonSpinner_check_" + scope.$id);
-				okCheckDiv.style.display = "none";
-
-				var errorDiv = document.getElementById("slgButtonSpinner_error_" + scope.$id);
-				errorDiv.style.display = "none";
-
-				if (scope.$parent[attr["slgButtonSpinnerError"]])
-					scope.$parent[attr["slgButtonSpinnerError"]] = null;
-
 				if (scope.expanded === true)
 					return $q.when();
 
@@ -102,15 +62,14 @@
 					scope.inProcess = true;
 					scope.expanded = true;
 
-					// default button
-					var expandPixels = 4;
+					var height = element[0].clientHeight;
 
-					if (element[0].className.toLowerCase().indexOf("btn-xs") >= 0)
+					var expandPixels = 5;
+
+					if (height <= 20) 
 						expandPixels = 3.5;
-					else if (element[0].className.toLowerCase().indexOf("btn-sm") >= 0)
+					else if (height <= 32) 
 						expandPixels = 4;
-					else if (element[0].className.toLowerCase().indexOf("btn-xl") >= 0)
-						expandPixels = 5;
 
 					scope.originalPadding = parseInt(slgGetStyle(element[0], "padding-right").replace('px', ''));
 					var nextPadding = scope.originalPadding;
@@ -151,7 +110,7 @@
 			}
 
 			function collapse() {
-				if (scope.expanded === false)
+				if (scope.showing === false)
 					return $q.when();
 
 				var deferred = $q.defer();
@@ -163,15 +122,15 @@
 					var spinnerDiv = document.getElementById("slgButtonSpinner_spinner_" + scope.$id);
 					spinnerDiv.style.display = "none";
 
-					// default button
-					var expandPixels = 4;
+					var height = element[0].clientHeight;
+					var expandPixels = 5;
 
-					if (element[0].className.toLowerCase().indexOf("btn-xs") >= 0)
+					if (height <= 20) {
 						expandPixels = 3.5;
-					else if (element[0].className.toLowerCase().indexOf("btn-sm") >= 0)
+					}
+					else if (height <= 32) {
 						expandPixels = 4;
-					else if (element[0].className.toLowerCase().indexOf("btn-xl") >= 0)
-						expandPixels = 5;
+					}
 
 					var nextPadding = parseInt(slgGetStyle(element[0], "padding-right").replace('px', ''));
 
@@ -210,31 +169,40 @@
 			}
 
 			function showSpinner() {
+				var height = element[0].clientHeight;
+
+				var spinnerLeft = 12;
+
 				var opts = {
-					color: "#fff",
-					radius: 4,
-					length: 4,
-					width: 2
+					color: "#fff"
 				}
 
-				
-				if (element[0].className.toLowerCase().indexOf("btn-xs") >= 0) {
+				if (height <= 20) {
 					opts.radius = 3;
 					opts.length = 3;
 					opts.width = 1;
 				}
-				else if (element[0].className.toLowerCase().indexOf("btn-sm") >= 0) {
+				else if (height <= 28) {
+					spinnerLeft = 15;
 					opts.radius = 3;
 					opts.length = 4;
 					opts.width = 2;
 				}
-				else if (element[0].className.toLowerCase().indexOf("btn-xl") >= 0) {
+				else if (height <= 32) {
+					spinnerLeft = 15;
+					opts.radius = 4;
+					opts.length = 4;
+					opts.width = 2;
+				}
+				else {
+					spinnerLeft = 20;
 					opts.radius = 5;
 					opts.length = 5;
 					opts.width = 2;
 				}
 
 				var spinnerDiv = document.getElementById("slgButtonSpinner_spinner_" + scope.$id);
+				spinnerDiv.style.left = spinnerLeft + "px";
 				spinnerDiv.style.display = "inline-block";
 				var spinner = new slgSpinner(opts).spin(spinnerDiv);
 			}

@@ -27,9 +27,9 @@
 			A value of true will show the spinner, false will hide it.<br />
 			<br />
 
-			<button class="btn btn-primary btn-xs" slg-button-spinner="isLoadingXS" slg-button-spinner-error="isLoadingXSErrorMessage" ng-click="isLoadingXS = !isLoadingXS">Button XS</button>
-			<button class="btn btn-primary btn-sm" slg-button-spinner="isLoadingSM" ng-click="isLoadingSM = !isLoadingSM">Button MD</button>
-			<button class="btn btn-primary" slg-button-spinner="isLoading" ng-click="quickChangeTest()">Button Normal</button>
+			<button class="btn btn-primary btn-xs" slg-button-spinner="isLoadingXS" ng-click="isLoadingXS = !isLoadingXS">Button XS</button>
+			<button class="btn btn-primary btn-sm" slg-button-spinner="isLoadingSM" ng-click="isLoadingSM = !isLoadingSM">Button SM</button>
+			<button class="btn btn-primary" slg-button-spinner="isLoading" slg-button-spinner-error="isLoadingXSErrorMessage" ng-click="quickChangeTest()">Button Normal</button>
 			<button class="btn btn-primary btn-lg btn" style="width: 200px" slg-button-spinner="isLoadingLG" ng-click="isLoadingLG = !isLoadingLG">Button LG</button>
 		</div>
 		<div ng-controller="slgPleaseWaitTestCtrl" class="well">
@@ -84,7 +84,6 @@
 	</div>
 	<script src="//cdnjs.cloudflare.com/ajax/libs/angular.js/1.5.8/angular.js"></script>
 	<script src="scripts/slgComponents.js"></script>
-	<script src="scripts/slgSpinner.js"></script>
 	<script src="scripts/slgButtonSpinner.js"></script>
 	<script src="scripts/slgPleaseWait.js"></script>
 	<script src="scripts/slgScrollableView.js"></script>
@@ -92,15 +91,21 @@
 
 	<script>
 		var app = angular.module('slgComponentsApp', [
-            'slgComponents'
+			'slgComponents'
 		]);
 
 		app.controller('slgButtonSpinnerTestCtrl', ['$scope', '$timeout', function ($scope, $timeout) {
+			$scope.showError = true;
+
 			$scope.quickChangeTest = function () {
 				$scope.isLoading = true;
-
+				
 				$timeout(function () {
-					$scope.isLoading = false;
+					$scope.showError = !$scope.showError;
+					if ($scope.showError)
+						$scope.isLoadingXSErrorMessage = "This is my error message";
+					else
+						$scope.isLoading = false;
 				}, 900);
 			}
 		}]);

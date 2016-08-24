@@ -1,4 +1,4 @@
-﻿//fgnass.github.com/spin.js#v1.2.5
+//fgnass.github.com/spin.js#v1.2.5
 /**
  * Copyright (c) 2011 Felix Gnass [fgnass at neteye dot de]
  * Licensed under the MIT license
