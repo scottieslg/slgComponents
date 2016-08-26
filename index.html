@@ -27,10 +27,10 @@
 			A value of true will show the spinner, false will hide it.<br />
 			<br />
 
-			<button class="btn btn-primary btn-xs" slg-button-spinner="isLoadingXS" ng-click="isLoadingXS = !isLoadingXS">Button XS</button>
-			<button class="btn btn-primary btn-sm" slg-button-spinner="isLoadingSM" ng-click="isLoadingSM = !isLoadingSM">Button SM</button>
-			<button class="btn btn-primary" slg-button-spinner="isLoading" slg-button-spinner-error="isLoadingXSErrorMessage" ng-click="quickChangeTest()">Button Normal</button>
-			<button class="btn btn-primary btn-lg btn" style="width: 200px" slg-button-spinner="isLoadingLG" ng-click="isLoadingLG = !isLoadingLG">Button LG</button>
+			<button class="btn btn-primary btn-xs" slg-button-spinner="isLoadingXSStatus" ng-click="onIsLoadingXSClicked()">Button XS</button>
+			<button class="btn btn-primary btn-sm" slg-button-spinner="isLoadingSMStatus" ng-click="onIsLoadingSMClicked()">Button XS</button>
+			<button class="btn btn-primary" slg-button-spinner="isLoadingStatus" slg-button-spinner-error-message="isLoadingXSErrorMessage" ng-click="onIsLoadingClicked()">Button Normal</button>
+			<button class="btn btn-primary btn-lg btn" style="width: 200px" slg-button-spinner="isLoadingLGStatus" ng-click="onIsLoadingLGClicked()">Button LG</button>
 		</div>
 		<div ng-controller="slgPleaseWaitTestCtrl" class="well">
 			The showPleaseWait component will render an gray overlay with a spinner that prevents any user action on the page.<br />
@@ -97,17 +97,54 @@
 		app.controller('slgButtonSpinnerTestCtrl', ['$scope', '$timeout', function ($scope, $timeout) {
 			$scope.showError = true;
 
-			$scope.quickChangeTest = function () {
-				$scope.isLoading = true;
+			$scope.onIsLoadingXSClicked = function () {
+				$scope.isLoadingXSStatus = "showspinner";
+
+				$timeout(function () {
+					$scope.isLoadingXSStatus = "showok";
+				}, 2000);
+			}
+
+			$scope.onIsLoadingSMClicked = function () {
+				$scope.isLoadingSMStatus = "showspinner";
+
+				$timeout(function () {
+					$scope.isLoadingSMStatus = "showerror";
+
+					$timeout(function () {
+						$scope.isLoadingSMStatus = "reset";
+					}, 2000);
+				}, 2000);
+			}
+
+			$scope.onIsLoadingClicked = function () {
+				$scope.isLoadingStatus = "showspinner";
 				
 				$timeout(function () {
 					$scope.showError = !$scope.showError;
 					if ($scope.showError)
-						$scope.isLoadingXSErrorMessage = "This is my error message";
+						$scope.isLoadingStatus = "showerror";
 					else
-						$scope.isLoading = false;
+						$scope.isLoadingStatus = "showok";
 				}, 900);
 			}
+
+			$scope.onIsLoadingLGClicked = function () {
+				$scope.isLoadingLGStatus = "showspinner";
+
+				$timeout(function () {
+					$scope.showError = !$scope.showError;
+					if ($scope.showError) {
+						$scope.isLoadingLGStatus = "showerror";
+						$timeout(function () {
+							$scope.isLoadingLGStatus = "reset";
+						}, 3000);
+					}
+					else
+						$scope.isLoadingLGStatus = "showok";
+				}, 3000);
+			}
+
 		}]);
 
 		app.controller('slgPleaseWaitTestCtrl', ['$scope', '$timeout', 'slgPleaseWaitSvc', function ($scope, $timeout, slgPleaseWaitSvc) {

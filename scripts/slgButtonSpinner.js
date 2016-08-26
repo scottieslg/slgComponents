@@ -14,73 +14,74 @@
 			element.append(angular.element("<div id='slgButtonSpinner_error_" + scope.$id + "' class='slgButtonSpinner_error'><i class='fa fa-times-circle-o'></i></div>"));
 
 			scope.$watch('$parent.' + attr["slgButtonSpinner"], function (newVal, oldVal) {
+				console.log(newVal);
 				if (oldVal === newVal)
 					return;
 
-				if (newVal === true) {
-					element[0].disabled = true;
+				var status = newVal.toLowerCase();
 
-					scope.waitToShowSpinner = $timeout(function () {
-						expand().then(function () {
-							showSpinner();
-						})
-					}, 100)
-				}
-				else if (newVal === false) {
-					$timeout.cancel(scope.waitToShowSpinner);
-					hideSpinner();
+				switch (status) {
+					case "showspinner":
+						element[0].disabled = true;
 
-					element[0].disabled = false;
+						scope.waitToShowSpinner = $timeout(function () {
+							expand().then(function () {
+								showSpinner();
+							})
+						}, 100)
+						break;
 
-					if (scope.$parent[attr["slgButtonSpinnerError"]])
-						return;
+					case "hidespinner":
+						element[0].disabled = false;
 
-					if (scope.showSuccessIndicator === false) {
+						hideSpinner();
 						collapse();
-					}
-					else {
+						break;
+
+					case "showok":
+						element[0].disabled = false;
+
+						hideSpinner();
+
 						var okCheckDiv = document.getElementById("slgButtonSpinner_check_" + scope.$id);
 						okCheckDiv.style.display = "inline-block";
-
 
 						scope.okTimeout = $timeout(function () {
 							var okCheckDiv = document.getElementById("slgButtonSpinner_check_" + scope.$id);
 							okCheckDiv.style.display = "none";
 							collapse();
-						}, 3000);	
-					}
-				}
-			});
+						}, 3000);
 
-			if (attr['slgButtonSpinnerError']) {
+						break;
 
-				scope.$watch('$parent.' + attr["slgButtonSpinnerError"], function (newVal, oldVal) {
-					if (oldVal === undefined && newVal === undefined)
-						return;
+					case "showerror":
+						hideSpinner();
+						element[0].disabled = false;
 
-					if (!newVal)
-						return;
-
-					hideSpinner();
-					element[0].disabled = false;
-
-					if (!scope.$parent[attr["slgButtonSpinnerError"]]) {
-						var errorDiv = document.getElementById("slgButtonSpinner_error_" + scope.$id);
-						errorDiv.style.display = "none";
-						collapse();
-					}
-					else {
 						$timeout.cancel(scope.okTimeout);
 						var okCheckDiv = document.getElementById("slgButtonSpinner_check_" + scope.$id);
 						okCheckDiv.style.display = "none";
 
 						var errorDiv = document.getElementById("slgButtonSpinner_error_" + scope.$id);
 						errorDiv.style.display = "inline-block";
+						break;
 
-						scope.$parent[attr["slgButtonSpinner"]] = false;
-					}
-				});
-			}
+					case "reset":
+						hideSpinner();
+
+						var okCheckDiv = document.getElementById("slgButtonSpinner_check_" + scope.$id);
+						okCheckDiv.style.display = "none";
+
+						var errorDiv = document.getElementById("slgButtonSpinner_error_" + scope.$id);
+						errorDiv.style.display = "none";
+
+						collapse().then(function () {
+							element[0].disabled = false;
+						})
+
+						break;
+				}
+			});
 
 			function expand() {
 				$timeout.cancel(scope.okTimeout);
