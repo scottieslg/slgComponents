@@ -137,7 +137,7 @@
 					if ($scope.showError) {
 						$scope.isLoadingLGStatus = "showerror";
 						$timeout(function () {
-							$scope.isLoadingLGStatus = "reset";
+							$scope.isLoadingLGStatus = null;
 						}, 3000);
 					}
 					else

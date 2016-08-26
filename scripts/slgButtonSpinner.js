@@ -18,7 +18,7 @@
 				if (oldVal === newVal)
 					return;
 
-				var status = newVal.toLowerCase();
+				var status = (newVal) ? newVal.toLowerCase() : "";
 
 				switch (status) {
 					case "showspinner":
@@ -67,6 +67,7 @@
 						break;
 
 					case "reset":
+					default:
 						hideSpinner();
 
 						var okCheckDiv = document.getElementById("slgButtonSpinner_check_" + scope.$id);
