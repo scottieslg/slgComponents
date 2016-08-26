@@ -1,5 +1,7 @@
 angular.module('slgComponents', []);
 
+console.log("slgComponents v.0.0.8");
+
 function slgGetStyle(oElm, strCssRule) {
 	var strValue = "";
 	if (document.defaultView && document.defaultView.getComputedStyle) {

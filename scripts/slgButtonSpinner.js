@@ -14,7 +14,6 @@
 			element.append(angular.element("<div id='slgButtonSpinner_error_" + scope.$id + "' class='slgButtonSpinner_error'><i class='fa fa-times-circle-o'></i></div>"));
 
 			scope.$watch('$parent.' + attr["slgButtonSpinner"], function (newVal, oldVal) {
-				console.log(newVal);
 				if (oldVal === newVal)
 					return;
 

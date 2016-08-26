@@ -22,7 +22,6 @@
  	};
 
  	slgPleaseWaitModel.spinner = new slgSpinner(opts).spin(document.getElementById('slgPleaseWaitSpinner'));
- 	console.log('Spinner Activated');
 
  	function show(timeoutDelay) {
  		timeoutDelay = (timeoutDelay === null || timeoutDelay === undefined) ? 300 : timeoutDelay;
