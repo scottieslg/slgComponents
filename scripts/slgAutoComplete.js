@@ -97,7 +97,7 @@
 
 			var html =
 				"<ul ng-show='visible' id='slgAutoComplete_{{$id}}' class='slgAutoComplete list-group'> " +
-				"	<li id='slg_{{$index}}' data-index='{{$index}}' ng-repeat='item in visibleListItems' class='list-group-item list-group-item-action' ng-class='{ \"active\" : selectedIndex === $index }' ng-mouseover='onMouseOver($index)' ng-click='onClick($index)' ng-bind-html='item | toTrusted'>{{item}}</li>" +
+				"	<li id='slg_{{$index}}' data-index='{{$index}}' ng-repeat='item in visibleListItems' class='list-group-item list-group-item-action' ng-class='{ \"active\" : selectedIndex === $index }' ng-mouseover='onMouseOver($index)' ng-click='onClick($index)' ng-bind-html='item.text | toTrusted'>{{item.text}}</li>" +
 				"</ul>";
 
 
@@ -268,18 +268,16 @@
 			});
 
 			$scope.refreshList = function () {
-				if (!$scope.searchText || $scope.searchText === '') {
-					$scope.visibleItems = [];
-					$scope.visibleListItems = [];
-					return;
-				}
+				$scope.visibleItems = [];
+				$scope.visibleListItems = [];
+
+				if (!$scope.searchText || $scope.searchText === '') 
+					return;				
 
 				getItems().then(function (items) {
 					$scope.allItems = items;
 
 					$scope.formattedItems = [];
-					$scope.visibleItems = [];
-					$scope.visibleListItems = [];
 
 					var exactMatchItems = [];
 					var exactMatchListItems = [];
@@ -366,13 +364,24 @@
 						}
 					});
 
-					$scope.visibleItems = [];
 					$scope.visibleItems = $scope.visibleItems.concat(exactMatchItems);
 					$scope.visibleItems = $scope.visibleItems.concat(partialMatchItems);
 
-					$scope.visibleListItems = [];
-					$scope.visibleListItems = $scope.visibleListItems.concat(exactMatchListItems);
-					$scope.visibleListItems = $scope.visibleListItems.concat(partialMatchListItems);
+					angular.forEach(exactMatchListItems, function (item) {
+						$scope.visibleListItems.push({
+							id: slgGuid(),
+							text: item
+						});
+					})
+
+					angular.forEach(partialMatchListItems, function (item) {
+						$scope.visibleListItems.push({
+							id: slgGuid(),
+							text: item
+						});
+					})
+
+					console.log($scope.visibleListItems);
 
 					if ($scope.selectFirstItemAfterLoad === true) {
 						$scope.selectFirstItemAfterLoad = false;

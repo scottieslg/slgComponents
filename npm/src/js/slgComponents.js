@@ -1,6 +1,6 @@
 angular.module('slgComponents', []);
 
-console.log("slgComponents v.0.0.8");
+console.log("slgComponents v.0.0.13");
 
 function slgGetValueFromNestedObject(obj, paramString) {
 	var names = paramString.split('.');
@@ -10,6 +10,16 @@ function slgGetValueFromNestedObject(obj, paramString) {
 		nextObj = obj[names[i]];
 
 	return nextObj;
+}
+
+function slgGuid() {
+	function s4() {
+		return Math.floor((1 + Math.random()) * 0x10000)
+				   .toString(16)
+				   .substring(1);
+	}
+	return s4() + s4() + '-' + s4() + '-' + s4() + '-' +
+		   s4() + '-' + s4() + s4() + s4();
 }
 
 function slgGetStyle(oElm, strCssRule) {
