@@ -167,11 +167,6 @@
 						scope.delayTimeout = null;
 						scope.searchText = scope.ngModel;
 
-						if (!scope.ngModel || scope.ngModel === '') {
-							scope.selectedModel = null;
-							return;
-						}
-
 						scope.refreshList();
 					}, scope.delay);
 				}
@@ -276,6 +271,12 @@
 			$scope.refreshList = function () {
 				$scope.visibleItems = [];
 				$scope.visibleListItems = [];
+
+				if (!$scope.ngModel || $scope.ngModel === '') {
+					$scope.visible = false;
+					$scope.selectedModel = null;
+					return;
+				}
 
 				if (!$scope.searchText || $scope.searchText === '')
 					return;

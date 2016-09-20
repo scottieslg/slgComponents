@@ -272,6 +272,12 @@ angular.module('slgComponents')
 				$scope.visibleItems = [];
 				$scope.visibleListItems = [];
 
+				if (!$scope.ngModel || $scope.ngModel === '') {
+					$scope.visible = false;
+					$scope.selectedModel = null;
+					return;
+				}
+
 				if (!$scope.searchText || $scope.searchText === '')
 					return;
 
