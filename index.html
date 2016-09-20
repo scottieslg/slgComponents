@@ -34,7 +34,7 @@
 					Model: {{model.selectedItemModel}}
 				</div>
 			</div>
-			<div class="form-group row">
+			<!--<div class="form-group row">
 				<div class="col-xs-2">
 					<input type="text" id="countryAutoComplete" class="form-control" placeholder="Search Country..." ng-model="countryText"
 						   slg-auto-complete
@@ -48,7 +48,7 @@
 					Model: {{model.selectedCountryModel | json}}
 
 				</div>
-			</div>
+			</div>-->
 
 		</div>
 
@@ -129,7 +129,7 @@
 					'slgComponents'
 				]);
 
-				app.controller("slgAutoCompleteTestCtrl", ['$scope', function ($scope) {
+				app.controller("slgAutoCompleteTestCtrl", ['$scope', '$timeout', function ($scope, $timeout) {
 					$scope.model = {
 						selectedItemModel: {},
 						selectedCountryModel: {}

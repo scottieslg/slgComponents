@@ -95,7 +95,7 @@
 
 			var html =
 				"<ul ng-show='visible' id='slgAutoComplete_{{$id}}' class='slgAutoComplete list-group'> " +
-				"	<li ng-repeat='item in visibleListItems' class='list-group-item list-group-item-action' ng-class='{ \"active\" : selectedIndex === $index }' ng-mouseover='onMouseOver($index)' ng-click='onClick($index)' ng-bind-html='item | toTrusted'>{{item}}</li>" +
+				"	<li id='slg_{{$index}}' data-index='{{$index}}' ng-repeat='item in visibleListItems' class='list-group-item list-group-item-action' ng-class='{ \"active\" : selectedIndex === $index }' ng-mouseover='onMouseOver($index)' ng-click='onClick($index)' ng-bind-html='item | toTrusted'>{{item}}</li>" +
 				"</ul>";
 
 
@@ -104,21 +104,30 @@
 
 
 			element.bind('keydown', function (e) {
-				console.log(e.which)
 				// down arrow
 				if (e.which === 40) {
+					if (!scope.visibleListItems || scope.visibleItems.length === 0 || scope.visible === false)
+						return;
+
 					scope.selectedIndex++;
 
 					if (scope.selectedIndex >= scope.visibleListItems.length - 1)
 						scope.selectedIndex = scope.visibleListItems.length - 1;
 
+					scrollIntoView();
+
 					scope.$apply();
 				}
 				else if (e.which === 38) {
+					if (!scope.visibleListItems || scope.visibleItems.length === 0 || scope.visible === false)
+						return;
+
 					scope.selectedIndex--;
 
 					if (scope.selectedIndex < 0)
 						scope.selectedIndex = 0;
+
+					scrollIntoView();
 
 					scope.$apply();
 				}
@@ -168,6 +177,24 @@
 					scope.$apply();
 				}
 			});
+
+			function scrollIntoView() {
+				var slgAutoCompleteElement = document.getElementById('slgAutoComplete_' + scope.$id);
+
+				var selectedItem = slgAutoCompleteElement.querySelectorAll("[data-index='" + scope.selectedIndex +"']")[0];
+
+				var scrollTop = slgAutoCompleteElement.scrollTop;
+				var scrollBottom = slgAutoCompleteElement.scrollTop + slgAutoCompleteElement.clientHeight;
+				
+				var liTop = selectedItem.offsetTop;
+				var liBottom = liTop + selectedItem.clientHeight;
+				
+				if (liTop < scrollTop)
+					slgAutoCompleteElement.scrollTop = selectedItem.offsetTop;
+				else if (liBottom > scrollBottom)
+					slgAutoCompleteElement.scrollTop += selectedItem.clientHeight + 1;
+
+			}
 
 			element.bind('keypress', function (e) {
 				if (e.which === 13)
