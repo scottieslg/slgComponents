@@ -1,6 +1,6 @@
 ﻿angular.module('slgComponents', []);
 
-console.log("slgComponents v.0.0.16");
+console.log("slgComponents v.0.0.17");
 
 function slgGetValueFromNestedObject(obj, paramString) {
 	var names = paramString.split('.');

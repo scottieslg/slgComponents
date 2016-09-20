@@ -167,6 +167,11 @@
 						scope.delayTimeout = null;
 						scope.searchText = scope.ngModel;
 
+						if (!scope.ngModel || scope.ngModel === '') {
+							scope.selectedModel = null;
+							return;
+						}
+
 						scope.refreshList();
 					}, scope.delay);
 				}
