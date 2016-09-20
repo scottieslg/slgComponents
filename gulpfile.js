@@ -18,7 +18,7 @@ gulp.task('js', function () {
 		'scripts/slgPleaseWait.js'])
 		.pipe(concat('slgComponents.min.js'))
 		.pipe(sourcemaps.init())
-		//.pipe(uglify())
+		.pipe(uglify())
 		.pipe(sourcemaps.write('./'))
 		.pipe(gulp.dest('npm/dist/js'))
 });
@@ -29,7 +29,7 @@ gulp.task('css', function () {
 		'content/slgAutoComplete.css',
 		'content/slgPleaseWait.css'])
 		.pipe(concat('slgComponents.min.css'))
-		//.pipe(uglifycss())
+		.pipe(uglifycss())
 		.pipe(gulp.dest('npm/dist/css'))
 });
 
