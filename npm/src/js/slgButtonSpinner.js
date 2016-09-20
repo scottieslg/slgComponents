@@ -265,6 +265,10 @@ angular.module('slgComponents')
 				return deferred.promise;
 			}
 
+			scope.$on("$destroy", function () {
+				$timeout.cancel(scope.waitToShowSpinner);
+				$timeout.cancel(scope.okTimeout);
+			});
 		}
 	}
 }]);

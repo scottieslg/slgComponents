@@ -1,4 +1,4 @@
-﻿angular.module('slgComponents')
+angular.module('slgComponents')
 .directive('slgAutoComplete', ['$timeout', '$interval', '$compile', function ($timeout, $interval, $compile) {
 	return {
 		restrict: 'A',
