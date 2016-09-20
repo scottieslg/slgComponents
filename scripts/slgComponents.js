@@ -2,6 +2,16 @@
 
 console.log("slgComponents v.0.0.8");
 
+function slgGetValueFromNestedObject(obj, paramString) {
+	var names = paramString.split('.');
+
+	var nextObj = obj;
+	for (i = 0; i < names.length; i++)
+		nextObj = obj[names[i]];
+
+	return nextObj;
+}
+
 function slgGetStyle(oElm, strCssRule) {
 	var strValue = "";
 	if (document.defaultView && document.defaultView.getComputedStyle) {

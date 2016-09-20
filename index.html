@@ -6,6 +6,7 @@
 	<link href="/node_modules/bootstrap/dist/css/bootstrap.css" rel="stylesheet" />
 	<!--<link href="content/bootstrap-overrides.css" rel="stylesheet" />-->
 	<link href="content/slgComponents.css" rel="stylesheet" />
+	<link href="content/slgAutoComplete.css" rel="stylesheet" />
 	<link href="content/slgButtonSpinner.css" rel="stylesheet" />
 	<link href="content/slgPleaseWait.css" rel="stylesheet" />
 	<link href="content/slgScrollableView.css" rel="stylesheet" />
@@ -19,191 +20,254 @@
 </head>
 <body ng-app="slgComponentsApp" ng-strict-di>
 	<div class="container" ng-cloak>
-		<div ng-controller="slgButtonSpinnerTestCtrl" class="well">
-			<i style="color: green" class="fa fa-cro"></i><br />
-			The button spinner will show a visual indicator that something is happening.<br />
-			<br />
-			The slg-button-spinner attribute will be used to declare which scope variable will be used to show/hide the spinner.<br />
-			A value of true will show the spinner, false will hide it.<br />
-			<br />
-
-			<button class="btn btn-primary btn-xs" slg-button-spinner="isLoadingXSStatus" ng-click="onIsLoadingXSClicked()">Button XS</button>
-			<button class="btn btn-primary btn-sm" slg-button-spinner="isLoadingSMStatus" ng-click="onIsLoadingSMClicked()">Button XS</button>
-			<button class="btn btn-primary" slg-button-spinner="isLoadingStatus" slg-button-spinner-error-message="isLoadingXSErrorMessage" ng-click="onIsLoadingClicked()">Button Normal</button>
-			<button class="btn btn-primary btn-lg btn" style="width: 200px" slg-button-spinner="isLoadingLGStatus" ng-click="onIsLoadingLGClicked()">Button LG</button>
-		</div>
-		<div ng-controller="slgPleaseWaitTestCtrl" class="well">
-			The showPleaseWait component will render an gray overlay with a spinner that prevents any user action on the page.<br />
-			<br />
-			The service will wait a default of 300ms before showing the overlay.  You can override this by passing a value into the .show().<br />
-			It will also timeout after 20 seconds and return to a non-overlayed status.  If you don't want a timeout, use forceShow and forceHide.<br />
-
-			<br />
-			Usage:<br />
-			app.controller('slgPleaseWaitTestCtrl', ['$scope', '$timeout', 'slgPleaseWaitSvc', function ($scope, $timeout, slgPleaseWaitSvc) {<br />
-			&ensp;&ensp;&ensp;$scope.showPleaseWait = function () {<br />
-			&ensp;&ensp;&ensp;&ensp;&ensp;&ensp;slgPleaseWaitSvc.show();<br />
-			<br />
-			&ensp;&ensp;&ensp;&ensp;&ensp;&ensp;$timeout(function() {<br />
-			&ensp;&ensp;&ensp;&ensp;&ensp;&ensp;&ensp;&ensp;&ensp;slgPleaseWaitSvc.hide();<br />
-			&ensp;&ensp;&ensp;&ensp;&ensp;&ensp;}, 5000)<br />
-			&ensp;&ensp;&ensp;}<br />
-			}]);<br />
-			<br />
-
-			<button class="btn btn-primary" ng-click="showPleaseWait()">Show Please Wait</button>
-			<button class="btn btn-primary" ng-click="showForcePleaseWait()">Show Force Please Wait</button>
-			<button class="btn btn-primary" ng-click="showPleaseWaitWithForceStop()">Show Please Wait With Force Stop</button>
-		</div>
-		<div ng-controller="slgScrollableViewTestCtrl" class="well">
-			The scrollabelView is a simple list that can be scrolled by using the keyboard or the mouse.<br />
-			It will automatically scroll into view whatever value is passed, if found.<br />
-			<br />
-			<div style="width: 400px">
-				Selected model: {{selectedModel}}<br />
-				<slg-scrollable-view ng-model="selectedModel"
-									 items="items">
-				</slg-scrollable-view>
-
+		<div ng-controller="slgAutoCompleteTestCtrl" class="well">
+			<div class="form-group row">
+				<div class="col-xs-4">
+					<input type="text" class="form-control" placeholder="Search Items..." ng-model="itemsText"
+						   slg-auto-complete
+						   slg-auto-complete-get-url='http://localhost:27565/item/GetItemsBySearchText?companyid=1'
+						   slg-auto-complete-min-chars="4"
+						   slg-auto-complete-list-formatter='itemsListFormatter(item)'
+						   slg-auto-complete-textbox-formatter='itemsTextboxFormatter(item)'
+						   slg-auto-complete-selected-model="model.selectedItemModel" />
+					Text: {{itemsText}}<br />
+					Model: {{model.selectedItemModel}}
+				</div>
 			</div>
-		</div>
+			<div class="form-group row">
+				<div class="col-xs-2">
+					<input type="text" id="countryAutoComplete" class="form-control" placeholder="Search Country..." ng-model="countryText"
+						   slg-auto-complete
+						   slg-auto-complete-data-list="countries"
+						   slg-auto-complete-min-chars="2"
+						   slg-auto-complete-allow-free-form-text="true"
+						   slg-auto-complete-list-formatter='countryListFormatter(item)'
+						   slg-auto-complete-textbox-formatter='countryTextboxFormatter(item)'
+						   slg-auto-complete-selected-model="model.selectedCountryModel" />
+					Text: {{countryText | json}}<br />
+					Model: {{model.selectedCountryModel | json}}
 
-		<div ng-controller="slgDropdownTestCtrl" class="well">
-			The dropdown component will acts as a typical dropdown, with a few nice features.<br />
-			<br />
-			<div style="width: 400px">
-				Selected Id: {{id}}<br />
-				Selected Text: {{selectedText}}
-				<slg-dropdown ng-model="id"
-							  placeholder="-- Select --"
-							  items="items"
-							  selected-text="selectedText">
-				</slg-dropdown>
+				</div>
 			</div>
+
 		</div>
-	</div>
-	<script src="//cdnjs.cloudflare.com/ajax/libs/angular.js/1.5.8/angular.js"></script>
-	<script src="scripts/slgComponents.js"></script>
-	<script src="scripts/slgButtonSpinner.js"></script>
-	<script src="scripts/slgPleaseWait.js"></script>
-	<script src="scripts/slgScrollableView.js"></script>
-	<script src="scripts/slgDropdown.js"></script>
 
-	<script>
-		var app = angular.module('slgComponentsApp', [
-			'slgComponents'
-		]);
 
-		app.controller('slgButtonSpinnerTestCtrl', ['$scope', '$timeout', function ($scope, $timeout) {
-			$scope.showError = true;
+				<div ng-controller="slgButtonSpinnerTestCtrl" class="well">
+					<i style="color: green" class="fa fa-cro"></i><br />
+					The button spinner will show a visual indicator that something is happening.<br />
+					<br />
+					The slg-button-spinner attribute will be used to declare which scope variable will be used to show/hide the spinner.<br />
+					A value of true will show the spinner, false will hide it.<br />
+					<br />
 
-			$scope.onIsLoadingXSClicked = function () {
-				$scope.isLoadingXSStatus = "showspinner";
+					<button class="btn btn-primary btn-xs" slg-button-spinner="isLoadingXSStatus" ng-click="onIsLoadingXSClicked()">Button XS</button>
+					<button class="btn btn-primary btn-sm" slg-button-spinner="isLoadingSMStatus" ng-click="onIsLoadingSMClicked()">Button XS</button>
+					<button class="btn btn-primary" slg-button-spinner="isLoadingStatus" slg-button-spinner-error-message="isLoadingXSErrorMessage" ng-click="onIsLoadingClicked()">Button Normal</button>
+					<button class="btn btn-primary btn-lg btn" style="width: 200px" slg-button-spinner="isLoadingLGStatus" ng-click="onIsLoadingLGClicked()">Button LG</button>
+				</div>
+				<div ng-controller="slgPleaseWaitTestCtrl" class="well">
+					The showPleaseWait component will render an gray overlay with a spinner that prevents any user action on the page.<br />
+					<br />
+					The service will wait a default of 300ms before showing the overlay.  You can override this by passing a value into the .show().<br />
+					It will also timeout after 20 seconds and return to a non-overlayed status.  If you don't want a timeout, use forceShow and forceHide.<br />
 
-				$timeout(function () {
-					$scope.isLoadingXSStatus = "showok";
-				}, 2000);
-			}
+					<br />
+					Usage:<br />
+					app.controller('slgPleaseWaitTestCtrl', ['$scope', '$timeout', 'slgPleaseWaitSvc', function ($scope, $timeout, slgPleaseWaitSvc) {<br />
+					&ensp;&ensp;&ensp;$scope.showPleaseWait = function () {<br />
+					&ensp;&ensp;&ensp;&ensp;&ensp;&ensp;slgPleaseWaitSvc.show();<br />
+					<br />
+					&ensp;&ensp;&ensp;&ensp;&ensp;&ensp;$timeout(function() {<br />
+					&ensp;&ensp;&ensp;&ensp;&ensp;&ensp;&ensp;&ensp;&ensp;slgPleaseWaitSvc.hide();<br />
+					&ensp;&ensp;&ensp;&ensp;&ensp;&ensp;}, 5000)<br />
+					&ensp;&ensp;&ensp;}<br />
+					}]);<br />
+					<br />
 
-			$scope.onIsLoadingSMClicked = function () {
-				$scope.isLoadingSMStatus = "showspinner";
+					<button class="btn btn-primary" ng-click="showPleaseWait()">Show Please Wait</button>
+					<button class="btn btn-primary" ng-click="showForcePleaseWait()">Show Force Please Wait</button>
+					<button class="btn btn-primary" ng-click="showPleaseWaitWithForceStop()">Show Please Wait With Force Stop</button>
+				</div>
+				<div ng-controller="slgScrollableViewTestCtrl" class="well">
+					The scrollabelView is a simple list that can be scrolled by using the keyboard or the mouse.<br />
+					It will automatically scroll into view whatever value is passed, if found.<br />
+					<br />
+					<div style="width: 400px">
+						Selected model: {{selectedModel}}<br />
+						<slg-scrollable-view ng-model="selectedModel"
+											 items="items">
+						</slg-scrollable-view>
 
-				$timeout(function () {
-					$scope.isLoadingSMStatus = "showerror";
+					</div>
+				</div>
 
-					$timeout(function () {
-						$scope.isLoadingSMStatus = "reset";
-					}, 2000);
-				}, 2000);
-			}
+				<div ng-controller="slgDropdownTestCtrl" class="well">
+					The dropdown component will acts as a typical dropdown, with a few nice features.<br />
+					<br />
+					<div style="width: 400px">
+						Selected Id: {{id}}<br />
+						Selected Text: {{selectedText}}
+						<slg-dropdown ng-model="id"
+									  placeholder="-- Select --"
+									  items="items"
+									  selected-text="selectedText">
+						</slg-dropdown>
+					</div>
+				</div>
+			</div>
+			<script src="//cdnjs.cloudflare.com/ajax/libs/angular.js/1.5.8/angular.js"></script>
+			<script src="scripts/slgComponents.js"></script>
+			<script src="scripts/slgAutoComplete.js"></script>
+			<script src="scripts/slgButtonSpinner.js"></script>
+			<script src="scripts/slgPleaseWait.js"></script>
+			<script src="scripts/slgScrollableView.js"></script>
+			<script src="scripts/slgDropdown.js"></script>
 
-			$scope.onIsLoadingClicked = function () {
-				$scope.isLoadingStatus = "showspinner";
-				
-				$timeout(function () {
-					$scope.showError = !$scope.showError;
-					if ($scope.showError)
-						$scope.isLoadingStatus = "showerror";
-					else
-						$scope.isLoadingStatus = "showok";
-				}, 900);
-			}
+			<script>
+				var app = angular.module('slgComponentsApp', [
+					'slgComponents'
+				]);
 
-			$scope.onIsLoadingLGClicked = function () {
-				$scope.isLoadingLGStatus = "showspinner";
+				app.controller("slgAutoCompleteTestCtrl", ['$scope', function ($scope) {
+					$scope.model = {
+						selectedItemModel: {},
+						selectedCountryModel: {}
+					}
 
-				$timeout(function () {
-					$scope.showError = !$scope.showError;
-					if ($scope.showError) {
-						$scope.isLoadingLGStatus = "showerror";
+					$scope.countries = [
+						{ countryCode: 'US', description: 'United States' },
+						{ countryCode: 'CA', description: 'Canada' },
+						{ countryCode: 'MX', description: 'Mexico' },
+					];
+
+					$scope.itemsListFormatter = function (item) {
+						return item.sku + " - " + item.description;
+					}
+
+					$scope.itemsTextboxFormatter = function (item) {
+						return item.sku;
+					}
+
+					$scope.countryListFormatter = function (item) {
+						return item.countryCode + " - " + item.description;
+					}
+
+					$scope.countryTextboxFormatter = function (item) {
+						return item.description;
+					}
+				}])
+
+				app.controller('slgButtonSpinnerTestCtrl', ['$scope', '$timeout', function ($scope, $timeout) {
+					$scope.showError = true;
+
+					$scope.onIsLoadingXSClicked = function () {
+						$scope.isLoadingXSStatus = "showspinner";
+
 						$timeout(function () {
-							$scope.isLoadingLGStatus = null;
+							$scope.isLoadingXSStatus = "showok";
+						}, 2000);
+					}
+
+					$scope.onIsLoadingSMClicked = function () {
+						$scope.isLoadingSMStatus = "showspinner";
+
+						$timeout(function () {
+							$scope.isLoadingSMStatus = "showerror";
+
+							$timeout(function () {
+								$scope.isLoadingSMStatus = "reset";
+							}, 2000);
+						}, 2000);
+					}
+
+					$scope.onIsLoadingClicked = function () {
+						$scope.isLoadingStatus = "showspinner";
+
+						$timeout(function () {
+							$scope.showError = !$scope.showError;
+							if ($scope.showError)
+								$scope.isLoadingStatus = "showerror";
+							else
+								$scope.isLoadingStatus = "showok";
+						}, 900);
+					}
+
+					$scope.onIsLoadingLGClicked = function () {
+						$scope.isLoadingLGStatus = "showspinner";
+
+						$timeout(function () {
+							$scope.showError = !$scope.showError;
+							if ($scope.showError) {
+								$scope.isLoadingLGStatus = "showerror";
+								$timeout(function () {
+									$scope.isLoadingLGStatus = null;
+								}, 3000);
+							}
+							else
+								$scope.isLoadingLGStatus = "showok";
 						}, 3000);
 					}
-					else
-						$scope.isLoadingLGStatus = "showok";
-				}, 3000);
-			}
 
-		}]);
+				}]);
 
-		app.controller('slgPleaseWaitTestCtrl', ['$scope', '$timeout', 'slgPleaseWaitSvc', function ($scope, $timeout, slgPleaseWaitSvc) {
-			$scope.showPleaseWait = function () {
-				slgPleaseWaitSvc.show();
+				app.controller('slgPleaseWaitTestCtrl', ['$scope', '$timeout', 'slgPleaseWaitSvc', function ($scope, $timeout, slgPleaseWaitSvc) {
+					$scope.showPleaseWait = function () {
+						slgPleaseWaitSvc.show();
 
-				$timeout(function () {
-					slgPleaseWaitSvc.show();
+						$timeout(function () {
+							slgPleaseWaitSvc.show();
 
-					$timeout(function () {
-						slgPleaseWaitSvc.hide();
-					}, 1000);
+							$timeout(function () {
+								slgPleaseWaitSvc.hide();
+							}, 1000);
 
-				}, 1000)
+						}, 1000)
 
-				$timeout(function () {
-					slgPleaseWaitSvc.hide();
-				}, 5000)
-			}
+						$timeout(function () {
+							slgPleaseWaitSvc.hide();
+						}, 5000)
+					}
 
-			$scope.showForcePleaseWait = function () {
-				slgPleaseWaitSvc.forceShow();
+					$scope.showForcePleaseWait = function () {
+						slgPleaseWaitSvc.forceShow();
 
-				$timeout(function () {
-					slgPleaseWaitSvc.forceHide();
-				}, 5000)
-			}
+						$timeout(function () {
+							slgPleaseWaitSvc.forceHide();
+						}, 5000)
+					}
 
-			$scope.showPleaseWaitWithForceStop = function () {
-				slgPleaseWaitSvc.show();
-				slgPleaseWaitSvc.show();
-				slgPleaseWaitSvc.show();
+					$scope.showPleaseWaitWithForceStop = function () {
+						slgPleaseWaitSvc.show();
+						slgPleaseWaitSvc.show();
+						slgPleaseWaitSvc.show();
 
-				$timeout(function () {
-					slgPleaseWaitSvc.forceHide();
-				}, 5000)
+						$timeout(function () {
+							slgPleaseWaitSvc.forceHide();
+						}, 5000)
 
-			}
-		}]);
+					}
+				}]);
 
-		app.controller('slgScrollableViewTestCtrl', ['$scope', '$timeout', function ($scope, $timeout) {
-			$scope.items = [
-				{ id: '1', text: 'One', someOtherVal: 'Blarg' },
-				{ id: '2', text: 'Two', someOtherVal: 'Bloog' },
-				{ id: '3', text: 'Three', someOtherVal: 'Blerf' },
-				{ id: '4', text: 'Four', someOtherVal: 'Blam' }
-			]
-		}]);
+				app.controller('slgScrollableViewTestCtrl', ['$scope', '$timeout', function ($scope, $timeout) {
+					$scope.items = [
+						{ id: '1', text: 'One', someOtherVal: 'Blarg' },
+						{ id: '2', text: 'Two', someOtherVal: 'Bloog' },
+						{ id: '3', text: 'Three', someOtherVal: 'Blerf' },
+						{ id: '4', text: 'Four', someOtherVal: 'Blam' }
+					]
+				}]);
 
-		app.controller('slgDropdownTestCtrl', ['$scope', '$timeout', function ($scope, $timeout) {
-			$scope.items = [
-				{ id: '1', text: 'One' },
-				{ id: '2', text: 'Two' },
-				{ id: '3', text: 'Three' },
-				{ id: '4', text: 'Four' }
-			]
-		}]);
+				app.controller('slgDropdownTestCtrl', ['$scope', '$timeout', function ($scope, $timeout) {
+					$scope.items = [
+						{ id: '1', text: 'One' },
+						{ id: '2', text: 'Two' },
+						{ id: '3', text: 'Three' },
+						{ id: '4', text: 'Four' }
+					]
+				}]);
 
-	</script>
+			</script>
 </body>
 
 </html>
