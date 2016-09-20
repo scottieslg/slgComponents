@@ -381,8 +381,6 @@ angular.module('slgComponents')
 						});
 					})
 
-					console.log($scope.visibleListItems);
-
 					if ($scope.selectFirstItemAfterLoad === true) {
 						$scope.selectFirstItemAfterLoad = false;
 
