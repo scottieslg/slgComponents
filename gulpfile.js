@@ -18,7 +18,7 @@ gulp.task('js', function () {
 		'scripts/slgPleaseWait.js'])
 		.pipe(concat('slgComponents.min.js'))
 		.pipe(sourcemaps.init())
-		.pipe(uglify())
+		//.pipe(uglify())
 		.pipe(sourcemaps.write('./'))
 		.pipe(gulp.dest('npm/dist/js'))
 });

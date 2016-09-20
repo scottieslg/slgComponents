@@ -57,7 +57,7 @@
 				}
 			}, 50);
 
-			scope.resize = function() {
+			scope.resize = function () {
 				if (!scope.width) {
 					var textboxWidth = element.prop('offsetWidth');
 					document.getElementById('slgAutoComplete_' + scope.$id).style.width = textboxWidth + "px";
@@ -183,14 +183,14 @@
 			function scrollIntoView() {
 				var slgAutoCompleteElement = document.getElementById('slgAutoComplete_' + scope.$id);
 
-				var selectedItem = slgAutoCompleteElement.querySelectorAll("[data-index='" + scope.selectedIndex +"']")[0];
+				var selectedItem = slgAutoCompleteElement.querySelectorAll("[data-index='" + scope.selectedIndex + "']")[0];
 
 				var scrollTop = slgAutoCompleteElement.scrollTop;
 				var scrollBottom = slgAutoCompleteElement.scrollTop + slgAutoCompleteElement.clientHeight;
-				
+
 				var liTop = selectedItem.offsetTop;
 				var liBottom = liTop + selectedItem.clientHeight;
-				
+
 				if (liTop < scrollTop)
 					slgAutoCompleteElement.scrollTop = selectedItem.offsetTop;
 				else if (liBottom > scrollBottom)
@@ -237,7 +237,7 @@
 				$scope.visible = false;
 
 				if (idx === -1 || (!$scope.visibleItems || $scope.visibleItems.length === 0)) {
-					if ($scope.selectedModel && $scope.textboxFormatter) 
+					if ($scope.selectedModel && $scope.textboxFormatter)
 						$scope.ngModel = $scope.textboxFormatter({ item: $scope.selectedModel });
 					else
 						$scope.ngModel = null;
@@ -255,7 +255,8 @@
 
 			$scope.$watch("selectedModel", function () {
 				if ($scope.selectedModel === null || $scope.selectedModel === undefined) {
-					$scope.ngModel = null;
+					if ($scope.allowFreeFormText === false)
+						$scope.ngModel = null;
 				}
 				else {
 					if ($scope.textboxFormatter)
@@ -271,8 +272,8 @@
 				$scope.visibleItems = [];
 				$scope.visibleListItems = [];
 
-				if (!$scope.searchText || $scope.searchText === '') 
-					return;				
+				if (!$scope.searchText || $scope.searchText === '')
+					return;
 
 				getItems().then(function (items) {
 					$scope.allItems = items;
@@ -289,9 +290,15 @@
 						if ($scope.listFormatter) {
 							var formattedString = $scope.listFormatter({ item: item });
 
-							if (formattedString.toLowerCase().indexOf($scope.searchText.toLowerCase()) >= 0) {
-								var index = formattedString.toLowerCase().indexOf($scope.searchText.toLowerCase());
+							if (formattedString.replace(/["']/g, "").toLowerCase().indexOf($scope.searchText.replace(/["']/g, "").toLowerCase()) >= 0) {
+								var index = formattedString.replace(/["']/g, "").toLowerCase().indexOf($scope.searchText.toLowerCase());
 								var length = $scope.searchText.length;
+
+								// see if there was a single quote
+								var hasSingleQuote = formattedString.substring(0, index + length + 1).indexOf("'") > 0;
+
+								if (hasSingleQuote)
+									length++;
 
 								var exactMatchStringStart = formattedString.substring(0, index);
 								var exactMatchStringMiddle = formattedString.substring(index, index + length);
@@ -313,10 +320,19 @@
 									var currentIndex = 0;
 									var infiniteLoopCheck = 10;
 
-									while (lowercaseString.indexOf(searchTerm, currentIndex) >= 0 && --infiniteLoopCheck > 0) {
-										currentIndex = lowercaseString.indexOf(searchTerm, currentIndex);
-										highlightPositions.push({ index: currentIndex, length: searchTerm.length });
-										currentIndex++;	// If we leave it at the current position, it will just keep finding the same item
+									while (lowercaseString.replace(/["']/g, "").indexOf(searchTerm.replace(/["']/g, ""), currentIndex) >= 0 && --infiniteLoopCheck > 0) {
+										currentIndex = lowercaseString.replace(/["']/g, "").indexOf(searchTerm.replace(/["']/g, ""), currentIndex);
+
+										// see if there was a single quote
+										var hasSingleQuote = lowercaseString.substring(currentIndex, currentIndex + searchTerm.length + 1).indexOf("'") > 0;
+										if (hasSingleQuote) {
+											highlightPositions.push({ index: currentIndex, length: searchTerm.length + 1 });
+											currentIndex += 2;	// If we leave it at the current position, it will just keep finding the same item
+										}
+										else {
+											highlightPositions.push({ index: currentIndex, length: searchTerm.length  });
+											currentIndex++;	// If we leave it at the current position, it will just keep finding the same item
+										}
 									}
 								});
 
