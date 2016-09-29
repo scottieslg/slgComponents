@@ -141,19 +141,21 @@ angular.module('slgComponents')
 					scope.$apply();
 				}
 				else if (e.which === 9) {
-					if (scope.delayTimeout || scope.loadingData === true)
-						scope.selectFirstItemAfterLoad = true;
-					else {
-						if (scope.allowFreeFormText === true && scope.selectedIndex === -1) {
-							scope.selectedModel = null;
-							scope.visible = false;
-						}
-						else						
-							scope.onClick((scope.selectedIndex === -1) ? 0 : scope.selectedIndex);
+					if (scope.allowFreeFormText === true && scope.selectedIndex === -1) {
+						$timeout.cancel(scope.delayTimeout);
+						//scope.selectedModel = null;
+						scope.visible = false;
+						scope.selectedIndex = -1;
+						scope.$apply();
+						return;
 					}
 
-					scope.$apply();
+					if (scope.delayTimeout || scope.loadingData === true)
+						scope.selectFirstItemAfterLoad = true;
+					else
+						scope.onClick((scope.selectedIndex === -1) ? 0 : scope.selectedIndex);
 
+					scope.$apply();
 				}
 				else if (e.which === 13) {
 					if (scope.selectedIndex === -1)
