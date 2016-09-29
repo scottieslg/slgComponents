@@ -17,11 +17,6 @@
 		},
 		require: 'ngModel',
 		link: function (scope, element, attrs, ngModelCtrl) {
-			scope.delay = scope.delay || 300;
-			scope.minChars = scope.minChars || 3;
-			scope.height = scope.height || "200px";
-			scope.allowFreeFormText = scope.allowFreeFormText || false;
-
 			if (!attrs["id"])
 				element[0].setAttribute('id', 'slgAutoComplete_textbox_' + scope.$id);
 
@@ -96,7 +91,7 @@
 			}
 
 			var html =
-				"<ul ng-show='visible' id='slgAutoComplete_{{$id}}' class='slgAutoComplete list-group'> " +
+				"<ul ng-show='visible' ng-mouseout='selectedIndex = -1;' id='slgAutoComplete_{{$id}}' class='slgAutoComplete list-group'> " +
 				"	<li id='slg_{{$index}}' data-index='{{$index}}' ng-repeat='item in visibleListItems' class='list-group-item list-group-item-action' ng-class='{ \"active\" : selectedIndex === $index }' ng-mouseover='onMouseOver($index)' ng-click='onClick($index)' ng-bind-html='item.text | toTrusted'>{{item.text}}</li>" +
 				"</ul>";
 
@@ -104,12 +99,22 @@
 			var compiled = $compile(html)(scope);
 			element.after(compiled);
 
+			element.bind('focus', function (e) {
+				if (!scope.visibleListItems || scope.visibleItems.length === 0)
+					return;
+
+				scope.selectedIndex = -1;
+				scope.visible = true;
+				scope.$apply();
+			});
 
 			element.bind('keydown', function (e) {
 				// down arrow
 				if (e.which === 40) {
-					if (!scope.visibleListItems || scope.visibleItems.length === 0 || scope.visible === false)
+					if (!scope.visibleListItems || scope.visibleItems.length === 0)
 						return;
+
+					scope.visible = true;
 
 					scope.selectedIndex++;
 
@@ -121,8 +126,10 @@
 					scope.$apply();
 				}
 				else if (e.which === 38) {
-					if (!scope.visibleListItems || scope.visibleItems.length === 0 || scope.visible === false)
+					if (!scope.visibleListItems || scope.visibleItems.length === 0)
 						return;
+
+					scope.visible = true;
 
 					scope.selectedIndex--;
 
@@ -141,8 +148,8 @@
 							scope.selectedModel = null;
 							scope.visible = false;
 						}
-						else
-							scope.onClick(scope.selectedIndex);
+						else						
+							scope.onClick((scope.selectedIndex === -1) ? 0 : scope.selectedIndex);
 					}
 
 					scope.$apply();
@@ -156,7 +163,7 @@
 					if (scope.loadingData === true)
 						return;
 					else {
-						scope.onClick(scope.selectedIndex);
+						scope.onClick((scope.selectedIndex === -1) ? 0 : scope.selectedIndex);
 						scope.$apply();
 					}
 				}
@@ -224,6 +231,10 @@
 			})
 		},
 		controller: ['$scope', '$interval', '$http', '$q', '$sce', function ($scope, $interval, $http, $q, $sce) {
+			$scope.delay = $scope.delay || 300;
+			$scope.minChars = $scope.minChars || 3;
+			$scope.height = $scope.height || "200px";
+			$scope.allowFreeFormText = $scope.allowFreeFormText || false;
 			$scope.loadingData = false;
 			$scope.selectedIndex = -1;
 			$scope.selectFirstItemAfterLoad = false;
@@ -403,6 +414,19 @@
 						});
 					})
 
+					$scope.resize();
+					$scope.visible = $scope.visibleItems.length > 0;
+					$scope.selectedIndex = ($scope.visibleItems.length > 0) ? 0 : -1;
+
+					if ($scope.allowFreeFormText == true) {
+						$scope.selectedIndex = -1;
+						var activeElement = angular.element(document.activeElement);
+						if (activeElement.attr('id') !== $scope.textboxId) 
+							$scope.visible = false;
+
+						return;
+					}
+
 					if ($scope.selectFirstItemAfterLoad === true) {
 						$scope.selectFirstItemAfterLoad = false;
 
@@ -416,10 +440,6 @@
 						$scope.onClick(0);
 						return;
 					}
-
-					$scope.resize();
-					$scope.visible = $scope.visibleItems.length > 0;
-					$scope.selectedIndex = ($scope.visibleItems.length > 0) ? 0 : -1;
 				})
 			}
 
