@@ -62,32 +62,32 @@
 
 			document.addEventListener('click', hideList, false);
 			function hideList(e) {
-				var el = angular.element(e.target);
+				$timeout(function() {
+					var el = angular.element(e.target);
 
-				// If they clicked on this textbox, don't hide the list
-				if (el.attr("id") === scope.textboxId) {
-					return;
-				}
-
-				// If they clicked on the li, get the underlying ul and check for the id
-				el = angular.element(el[0].parentNode);
-				if (el.attr("id") === 'slgAutoComplete_' + scope.$id)
-					return;
-
-				scope.visible = false;
-
-
-				if (scope.allowFreeFormText === true) {
-				}
-				else {
-					if (scope.selectedModel)
-						scope.ngModel = scope.textboxFormatter({ item: scope.selectedModel });
-					else {
-						scope.ngModel = null;
+					// If they clicked on this textbox, don't hide the list
+					if (el.attr("id") === scope.textboxId) {
+						return;
 					}
-				}
 
-				scope.$apply();
+					// If they clicked on the li, get the underlying ul and check for the id
+					el = angular.element(el[0].parentNode);
+					if (el.attr("id") === 'slgAutoComplete_' + scope.$id)
+						return;
+
+					scope.visible = false;
+
+
+					if (scope.allowFreeFormText === true) {
+					}
+					else {
+						if (scope.selectedModel)
+							scope.ngModel = scope.textboxFormatter({ item: scope.selectedModel });
+						else {
+							scope.ngModel = null;
+						}
+					}
+				})
 			}
 
 			var html =
@@ -100,91 +100,82 @@
 			element.after(compiled);
 
 			element.bind('keydown', function (e) {
-				// down arrow
-				if (e.which === 40) {
-					if (!scope.visibleListItems || scope.visibleItems.length === 0)
-						return;
+				$timeout(function() {
+					// down arrow
+					if (e.which === 40) {
+						if (!scope.visibleListItems || scope.visibleItems.length === 0)
+							return;
 
-					scope.visible = true;
+						scope.visible = true;
 
-					scope.selectedIndex++;
+						scope.selectedIndex++;
 
-					if (scope.selectedIndex >= scope.visibleListItems.length - 1)
-						scope.selectedIndex = scope.visibleListItems.length - 1;
+						if (scope.selectedIndex >= scope.visibleListItems.length - 1)
+							scope.selectedIndex = scope.visibleListItems.length - 1;
 
-					scrollIntoView();
+						scrollIntoView();
+					}
+					else if (e.which === 38) {
+						if (!scope.visibleListItems || scope.visibleItems.length === 0)
+							return;
 
-					scope.$apply();
-				}
-				else if (e.which === 38) {
-					if (!scope.visibleListItems || scope.visibleItems.length === 0)
-						return;
+						scope.visible = true;
 
-					scope.visible = true;
+						scope.selectedIndex--;
 
-					scope.selectedIndex--;
+						if (scope.selectedIndex < 0)
+							scope.selectedIndex = 0;
 
-					if (scope.selectedIndex < 0)
-						scope.selectedIndex = 0;
+						scrollIntoView();
+					}
+					else if (e.which === 9) {
+						if (!element.val()) {
+							$timeout.cancel(scope.delayTimeout);
+							scope.visible = false;
+							return;
+						}
 
-					scrollIntoView();
+						if (scope.allowFreeFormText === true && scope.selectedIndex === -1) {
+							$timeout.cancel(scope.delayTimeout);
+							//scope.selectedModel = null;
+							scope.visible = false;
+							scope.selectedIndex = -1;
+							return;
+						}
 
-					scope.$apply();
-				}
-				else if (e.which === 9) {
-					if (!element.val()) {
+						if (scope.delayTimeout || scope.loadingData === true)
+							scope.selectFirstItemAfterLoad = true;
+						else
+							scope.onClick((scope.selectedIndex === -1) ? 0 : scope.selectedIndex);
+					}
+					else if (e.which === 13) {
+						if (scope.selectedIndex === -1)
+							return;
+
+						// If we're still loading the data, but 
+						if (scope.loadingData === true)
+							return;
+						else {
+							scope.onClick((scope.selectedIndex === -1) ? 0 : scope.selectedIndex);
+						}
+					}
+					else if (e.which === 8 || e.which === 46) {
 						$timeout.cancel(scope.delayTimeout);
-						scope.visible = false;
-						scope.$apply();
-						return;
+
+						scope.delayTimeout = $timeout(function () {
+							scope.delayTimeout = null;
+							scope.searchText = scope.ngModel;
+
+							scope.refreshList();
+						}, scope.delay);
 					}
-
-					if (scope.allowFreeFormText === true && scope.selectedIndex === -1) {
-						$timeout.cancel(scope.delayTimeout);
-						//scope.selectedModel = null;
-						scope.visible = false;
-						scope.selectedIndex = -1;
-						scope.$apply();
-						return;
+					else if (e.which === 27) {
+						if (scope.selectedIndex > -1)
+							scope.selectedIndex = -1;
+						else
+							scope.visible = false;
 					}
-
-					if (scope.delayTimeout || scope.loadingData === true)
-						scope.selectFirstItemAfterLoad = true;
-					else
-						scope.onClick((scope.selectedIndex === -1) ? 0 : scope.selectedIndex);
-
-					scope.$apply();
-				}
-				else if (e.which === 13) {
-					if (scope.selectedIndex === -1)
-						return;
-
-					// If we're still loading the data, but 
-					if (scope.loadingData === true)
-						return;
-					else {
-						scope.onClick((scope.selectedIndex === -1) ? 0 : scope.selectedIndex);
-						scope.$apply();
-					}
-				}
-				else if (e.which === 8 || e.which === 46) {
-					$timeout.cancel(scope.delayTimeout);
-
-					scope.delayTimeout = $timeout(function () {
-						scope.delayTimeout = null;
-						scope.searchText = scope.ngModel;
-
-						scope.refreshList();
-					}, scope.delay);
-				}
-				else if (e.which === 27) {
-					if (scope.selectedIndex > -1)
-						scope.selectedIndex = -1;
-					else
-						scope.visible = false;
-
-					scope.$apply();
-				}
+				})
 			});
 
 			function scrollIntoView() {
@@ -220,22 +211,22 @@
 			});
 
 			element.bind('focus', function (e) {
-				scope.selectFirstItemAfterLoad = false;
+				$timeout(function() {
+					scope.selectFirstItemAfterLoad = false;
 
-				if (!scope.visibleListItems || scope.visibleItems.length === 0)
-					return;
+					if (!scope.visibleListItems || scope.visibleItems.length === 0)
+						return;
 
-				if (!element.val() || element.val() === '') {
+					if (!element.val() || element.val() === '') {
+						scope.selectedIndex = -1;
+						scope.visibleListItems = null;
+						scope.visible = false;
+						return;
+					}
+
 					scope.selectedIndex = -1;
-					scope.visibleListItems = null;
-					scope.visible = false;
-					scope.$apply();
-					return;
-				}
-
-				scope.selectedIndex = -1;
-				scope.visible = true;
-				scope.$apply();
+					scope.visible = true;
+				})
 			});
 
 
