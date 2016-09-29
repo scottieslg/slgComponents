@@ -99,15 +99,6 @@ angular.module('slgComponents')
 			var compiled = $compile(html)(scope);
 			element.after(compiled);
 
-			element.bind('focus', function (e) {
-				if (!scope.visibleListItems || scope.visibleItems.length === 0)
-					return;
-
-				scope.selectedIndex = -1;
-				scope.visible = true;
-				scope.$apply();
-			});
-
 			element.bind('keydown', function (e) {
 				// down arrow
 				if (e.which === 40) {
@@ -141,6 +132,13 @@ angular.module('slgComponents')
 					scope.$apply();
 				}
 				else if (e.which === 9) {
+					if (!element.val()) {
+						$timeout.cancel(scope.delayTimeout);
+						scope.visible = false;
+						scope.$apply();
+						return;
+					}
+
 					if (scope.allowFreeFormText === true && scope.selectedIndex === -1) {
 						$timeout.cancel(scope.delayTimeout);
 						//scope.selectedModel = null;
@@ -223,6 +221,21 @@ angular.module('slgComponents')
 
 			element.bind('focus', function (e) {
 				scope.selectFirstItemAfterLoad = false;
+
+				if (!scope.visibleListItems || scope.visibleItems.length === 0)
+					return;
+
+				if (!element.val() || element.val() === '') {
+					scope.selectedIndex = -1;
+					scope.visibleListItems = null;
+					scope.visible = false;
+					scope.$apply();
+					return;
+				}
+
+				scope.selectedIndex = -1;
+				scope.visible = true;
+				scope.$apply();
 			});
 
 
