@@ -92,7 +92,7 @@ angular.module('slgComponents')
 
 			var html =
 				"<ul ng-show='visible' ng-mouseout='selectedIndex = -1;' id='slgAutoComplete_{{$id}}' class='slgAutoComplete list-group'> " +
-				"	<li id='slg_{{$index}}' data-index='{{$index}}' ng-repeat='item in visibleListItems' class='list-group-item list-group-item-action' ng-class='{ \"active\" : selectedIndex === $index }' ng-mouseover='onMouseOver($index)' ng-click='onClick($index)' ng-bind-html='item.text | toTrusted'>{{item.text}}</li>" +
+				"	<li id='slg_{{$index}}' data-index='{{$index}}' ng-repeat='item in visibleListItems' class='list-group-item list-group-item-action' ng-class='{ \"active\" : selectedIndex === $index }' ng-click='onClick($index)' ng-bind-html='item.text | toTrusted'>{{item.text}}</li>" +
 				"</ul>";
 
 
@@ -223,9 +223,6 @@ angular.module('slgComponents')
 						scope.visible = false;
 						return;
 					}
-
-					scope.selectedIndex = -1;
-					scope.visible = true;
 				})
 			});
 
