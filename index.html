@@ -25,12 +25,21 @@
 				<div class="col-xs-4">
 					<input type="text" class="form-control" placeholder="Search Items..." ng-model="itemsText"
 						   slg-auto-complete
-						   slg-auto-complete-get-url='http://localhost:27565/item/GetItemsBySearchText?companyid=1'
+						   slg-auto-complete-items="items"
 						   slg-auto-complete-min-chars="4"
 						   slg-auto-complete-allow-free-form-text="false"
 						   slg-auto-complete-list-formatter='itemsListFormatter(item)'
 						   slg-auto-complete-textbox-formatter='itemsTextboxFormatter(item)'
 						   slg-auto-complete-selected-model="model.selectedItemModel" />
+
+					<!--<input type="text" class="form-control" placeholder="Search Items..." ng-model="itemsText"
+						   slg-auto-complete
+						   slg-auto-complete-get-url='http://localhost:27565/item/GetItemsBySearchText?companyid=1'
+						   slg-auto-complete-min-chars="4"
+						   slg-auto-complete-allow-free-form-text="false"
+						   slg-auto-complete-list-formatter='itemsListFormatter(item)'
+						   slg-auto-complete-textbox-formatter='itemsTextboxFormatter(item)'
+						   slg-auto-complete-selected-model="model.selectedItemModel" />-->
 					Text: {{itemsText}}<br />
 					Model: {{model.selectedItemModel}}<br />
 					<button ng-click="reset();" class="btn btn-primary">Clear Text</button>
@@ -55,226 +64,222 @@
 		</div>
 
 
-				<div ng-controller="slgButtonSpinnerTestCtrl" class="well">
-					<i style="color: green" class="fa fa-cro"></i><br />
-					The button spinner will show a visual indicator that something is happening.<br />
-					<br />
-					The slg-button-spinner attribute will be used to declare which scope variable will be used to show/hide the spinner.<br />
-					A value of true will show the spinner, false will hide it.<br />
-					<br />
+		<div ng-controller="slgButtonSpinnerTestCtrl" class="well">
+			<i style="color: green" class="fa fa-cro"></i><br />
+			The button spinner will show a visual indicator that something is happening.<br />
+			<br />
+			The slg-button-spinner attribute will be used to declare which scope variable will be used to show/hide the spinner.<br />
+			A value of true will show the spinner, false will hide it.<br />
+			<br />
 
-					<button class="btn btn-primary btn-xs" slg-button-spinner="isLoadingXSStatus" ng-click="onIsLoadingXSClicked()">Button XS</button>
-					<button class="btn btn-primary btn-sm" slg-button-spinner="isLoadingSMStatus" ng-click="onIsLoadingSMClicked()">Button XS</button>
-					<button class="btn btn-primary" slg-button-spinner="isLoadingStatus" slg-button-spinner-error-message="isLoadingXSErrorMessage" ng-click="onIsLoadingClicked()">Button Normal</button>
-					<button class="btn btn-primary btn-lg btn" style="width: 200px" slg-button-spinner="isLoadingLGStatus" ng-click="onIsLoadingLGClicked()">Button LG</button>
-				</div>
-				<div ng-controller="slgPleaseWaitTestCtrl" class="well">
-					The showPleaseWait component will render an gray overlay with a spinner that prevents any user action on the page.<br />
-					<br />
-					The service will wait a default of 300ms before showing the overlay.  You can override this by passing a value into the .show().<br />
-					It will also timeout after 20 seconds and return to a non-overlayed status.  If you don't want a timeout, use forceShow and forceHide.<br />
+			<button class="btn btn-primary btn-xs" slg-button-spinner="isLoadingXSStatus" ng-click="onIsLoadingXSClicked()">Button XS</button>
+			<button class="btn btn-primary btn-sm" slg-button-spinner="isLoadingSMStatus" ng-click="onIsLoadingSMClicked()">Button XS</button>
+			<button class="btn btn-primary" slg-button-spinner="isLoadingStatus" slg-button-spinner-error-message="isLoadingXSErrorMessage" ng-click="onIsLoadingClicked()">Button Normal</button>
+			<button class="btn btn-primary btn-lg btn" style="width: 200px" slg-button-spinner="isLoadingLGStatus" ng-click="onIsLoadingLGClicked()">Button LG</button>
+		</div>
+		<div ng-controller="slgPleaseWaitTestCtrl" class="well">
+			The showPleaseWait component will render an gray overlay with a spinner that prevents any user action on the page.<br />
+			<br />
+			The service will wait a default of 300ms before showing the overlay.  You can override this by passing a value into the .show().<br />
+			It will also timeout after 20 seconds and return to a non-overlayed status.  If you don't want a timeout, use forceShow and forceHide.<br />
 
-					<br />
-					Usage:<br />
-					app.controller('slgPleaseWaitTestCtrl', ['$scope', '$timeout', 'slgPleaseWaitSvc', function ($scope, $timeout, slgPleaseWaitSvc) {<br />
-					&ensp;&ensp;&ensp;$scope.showPleaseWait = function () {<br />
-					&ensp;&ensp;&ensp;&ensp;&ensp;&ensp;slgPleaseWaitSvc.show();<br />
-					<br />
-					&ensp;&ensp;&ensp;&ensp;&ensp;&ensp;$timeout(function() {<br />
-					&ensp;&ensp;&ensp;&ensp;&ensp;&ensp;&ensp;&ensp;&ensp;slgPleaseWaitSvc.hide();<br />
-					&ensp;&ensp;&ensp;&ensp;&ensp;&ensp;}, 5000)<br />
-					&ensp;&ensp;&ensp;}<br />
-					}]);<br />
-					<br />
+			<br />
+			Usage:<br />
+			app.controller('slgPleaseWaitTestCtrl', ['$scope', '$timeout', 'slgPleaseWaitSvc', function ($scope, $timeout, slgPleaseWaitSvc) {<br />
+			&ensp;&ensp;&ensp;$scope.showPleaseWait = function () {<br />
+			&ensp;&ensp;&ensp;&ensp;&ensp;&ensp;slgPleaseWaitSvc.show();<br />
+			<br />
+			&ensp;&ensp;&ensp;&ensp;&ensp;&ensp;$timeout(function() {<br />
+			&ensp;&ensp;&ensp;&ensp;&ensp;&ensp;&ensp;&ensp;&ensp;slgPleaseWaitSvc.hide();<br />
+			&ensp;&ensp;&ensp;&ensp;&ensp;&ensp;}, 5000)<br />
+			&ensp;&ensp;&ensp;}<br />
+			}]);<br />
+			<br />
 
-					<button class="btn btn-primary" ng-click="showPleaseWait()">Show Please Wait</button>
-					<button class="btn btn-primary" ng-click="showForcePleaseWait()">Show Force Please Wait</button>
-					<button class="btn btn-primary" ng-click="showPleaseWaitWithForceStop()">Show Please Wait With Force Stop</button>
-				</div>
-				<div ng-controller="slgScrollableViewTestCtrl" class="well">
-					The scrollabelView is a simple list that can be scrolled by using the keyboard or the mouse.<br />
-					It will automatically scroll into view whatever value is passed, if found.<br />
-					<br />
-					<div style="width: 400px">
-						Selected model: {{selectedModel}}<br />
-						<slg-scrollable-view ng-model="selectedModel"
-											 items="items">
-						</slg-scrollable-view>
+			<button class="btn btn-primary" ng-click="showPleaseWait()">Show Please Wait</button>
+			<button class="btn btn-primary" ng-click="showForcePleaseWait()">Show Force Please Wait</button>
+			<button class="btn btn-primary" ng-click="showPleaseWaitWithForceStop()">Show Please Wait With Force Stop</button>
+		</div>
+		<div ng-controller="slgScrollableViewTestCtrl" class="well">
+			The scrollabelView is a simple list that can be scrolled by using the keyboard or the mouse.<br />
+			It will automatically scroll into view whatever value is passed, if found.<br />
+			<br />
+			<div style="width: 400px">
+				Selected model: {{selectedModel}}<br />
+				<slg-scrollable-view ng-model="selectedModel"
+									 items="items">
+				</slg-scrollable-view>
 
-					</div>
-				</div>
-
-				<div ng-controller="slgDropdownTestCtrl" class="well">
-					The dropdown component will acts as a typical dropdown, with a few nice features.<br />
-					<br />
-					<div style="width: 400px">
-						Selected Id: {{id}}<br />
-						Selected Text: {{selectedText}}
-						<slg-dropdown ng-model="id"
-									  placeholder="-- Select --"
-									  items="items"
-									  selected-text="selectedText">
-						</slg-dropdown>
-					</div>
-				</div>
 			</div>
-			<script src="//cdnjs.cloudflare.com/ajax/libs/angular.js/1.5.8/angular.js"></script>
-			<script src="scripts/slgComponents.js"></script>
-			<script src="scripts/slgAutoComplete.js"></script>
-			<script src="scripts/slgButtonSpinner.js"></script>
-			<script src="scripts/slgPleaseWait.js"></script>
-			<script src="scripts/slgScrollableView.js"></script>
-			<script src="scripts/slgDropdown.js"></script>
+		</div>
 
-			<script>
-				var app = angular.module('slgComponentsApp', [
-					'slgComponents'
-				]);
+		<div ng-controller="slgDropdownTestCtrl" class="well">
+			The dropdown component will acts as a typical dropdown, with a few nice features.<br />
+			<br />
+			<div style="width: 400px">
+				Selected Id: {{id}}<br />
+				Selected Text: {{selectedText}}
+				<slg-dropdown ng-model="id"
+							  placeholder="-- Select --"
+							  items="items"
+							  selected-text="selectedText">
+				</slg-dropdown>
+			</div>
+		</div>
+	</div>
+	<script src="//cdnjs.cloudflare.com/ajax/libs/angular.js/1.5.8/angular.js"></script>
+	<script src="scripts/slgComponents.js"></script>
+	<script src="scripts/slgAutoComplete.js"></script>
+	<script src="scripts/slgButtonSpinner.js"></script>
+	<script src="scripts/slgPleaseWait.js"></script>
+	<script src="scripts/slgScrollableView.js"></script>
+	<script src="scripts/slgDropdown.js"></script>
 
-				app.controller("slgAutoCompleteTestCtrl", ['$scope', '$timeout', function ($scope, $timeout) {
-					$scope.model = {
-						selectedItemModel: {},
-						selectedCountryModel: {}
-					}
+	<script>
+		var app = angular.module('slgComponentsApp', [
+			'slgComponents'
+		]);
 
-					$scope.reset = function () {
-						$scope.itemsText = '';
-						$scope.model.selectedItemModel = {};
-					}
+		app.controller("slgAutoCompleteTestCtrl", ['$scope', '$timeout', function ($scope, $timeout) {
+			$scope.model = {
+				selectedItemModel: null,
+				selectedCountryModel: {}
+			}
 
-					$scope.countries = [
-						{ countryCode: 'US', description: 'United States' },
-						{ countryCode: 'CA', description: 'Canada' },
-						{ countryCode: 'MX', description: 'Mexico' },
-					];
+			$scope.reset = function () {
+				$scope.itemsText = '';
+				$scope.model.selectedItemModel = {};
+			}
 
-					$scope.itemsListFormatter = function (item) {
-						return item.sku + " - " + item.description;
-					}
+			$scope.items = [{ "id": "3225", "text": "Cleaner - Wicked Cleaner", "additional": ["Cleaner"] }, { "id": "507", "text": "A0002 - Bench Bracket Custom size (allow 1 week to ship)", "additional": ["A0002"] }, { "id": "508", "text": "A0003 - Tube 6 in w/drive inserts CS3000 for A0004 (20 ft)", "additional": ["A0003"] }, { "id": "509", "text": "A0004 - Slim Flush Guide - Guide Feed Assembly", "additional": ["A0004"] }, { "id": "510", "text": "A0005 - Slim Flush Guide - End Pulley Assembly", "additional": ["A0005"] }, { "id": "511", "text": "A0006 - Slim Flush Guide - Guide Feed with Pulley", "additional": ["A0006"] }, { "id": "512", "text": "A0007 - RT/UG Right NME w/ Cone 2013", "additional": ["A0007"] }, { "id": "513", "text": "A0008 - Bench Bracket Center 15 in high 19 in wide (allow 1 week to ship)", "additional": ["A0008"] }, { "id": "514", "text": "A0009 - Slim Flush Guide -  Hardware Kit", "additional": ["A0009"] }, { "id": "515", "text": "A0010 - Wheel assembly TG (pre 403) CS1800 w/LE Tube Inserts 3 in tube (std) SET", "additional": ["A0010"] }, { "id": "516", "text": "A0012 - Mechanism Coverluxe RT/UG Right 2013", "additional": ["A0012"] }, { "id": "517", "text": "A0013 - Bracket Assembly Coverluxe Mechanism Main Body", "additional": ["A0013"] }, { "id": "518", "text": "A0014 - Ladder Hinges Tube to Deck SET 1-3/4 & 1-7/8 O.D STD", "additional": ["A0014"] }, { "id": "519", "text": "A0015 - Ladder Hinges Tube to Tube SET 1-3/4 O.D. STD", "additional": ["A0015"] }, { "id": "520", "text": "A0016 - Snap unlocking tool", "additional": ["A0016"] }, { "id": "521", "text": "A0017 - TL Caliper Style Coverluxe 2013", "additional": ["A0017"] }, { "id": "522", "text": "A0019 - RT/UG Left NME w/ Cone 2013", "additional": ["A0019"] }, { "id": "523", "text": "A0020 - Cone assembly CS1800 NME (brake, cone, square plate)", "additional": ["A0020"] }, { "id": "524", "text": "A0021 - Slim Flush Guide - Guide & Housing Assembly", "additional": ["A0021"] }, { "id": "525", "text": "A0022 - Pulley endcap ASSEMBLY UG  ea. (OLD STYLE)", "additional": ["A0022"] }, { "id": "526", "text": "A0024 - Mechanism Coverluxe RT/UG Left 2013", "additional": ["A0024"] }, { "id": "527", "text": "A0025 - Lid Kit Aluminum Lid 8 in hinge for 20ft guide space UG", "additional": ["A0025"] }, { "id": "528", "text": "A0026 - Lid Kit Aluminum Lid 8 in hinge for 20ft guide space TG", "additional": ["A0026"] }, { "id": "529", "text": "A0028 - Mechanism Coverluxe Deck Right 2013", "additional": ["A0028"] }, { "id": "530", "text": "A0029 - Mechanism Coverluxe Deck Left 2013", "additional": ["A0029"] }, { "id": "531", "text": "A0032 - Deck Right NME w/ Cone 2013", "additional": ["A0032"] }, { "id": "532", "text": "A0033 - Deck Left NME W/ Cone 2013", "additional": ["A0033"] }];
+			$scope.itemsListFormatter = function (item) {
+				return item.additional[0] + " - " + item.text;
+			}
 
-					$scope.itemsTextboxFormatter = function (item) {
-						return item.sku;
-					}
+			$scope.itemsTextboxFormatter = function (item) {
+				console.log(item);
+				return item.additional[0];
+			}
 
-					$scope.countryListFormatter = function (item) {
-						return item.countryCode + " - " + item.description;
-					}
+			$scope.countryListFormatter = function (item) {
+				return item.additional[0] + " - " + item.text;
+			}
 
-					$scope.countryTextboxFormatter = function (item) {
-						return item.description;
-					}
-				}])
+			$scope.countryTextboxFormatter = function (item) {
+				return item.text;
+			}
+		}])
 
-				app.controller('slgButtonSpinnerTestCtrl', ['$scope', '$timeout', function ($scope, $timeout) {
-					$scope.showError = true;
+		app.controller('slgButtonSpinnerTestCtrl', ['$scope', '$timeout', function ($scope, $timeout) {
+			$scope.showError = true;
 
-					$scope.onIsLoadingXSClicked = function () {
-						$scope.isLoadingXSStatus = "showspinner";
+			$scope.onIsLoadingXSClicked = function () {
+				$scope.isLoadingXSStatus = "showspinner";
 
+				$timeout(function () {
+					$scope.isLoadingXSStatus = "showok";
+				}, 2000);
+			}
+
+			$scope.onIsLoadingSMClicked = function () {
+				$scope.isLoadingSMStatus = "showspinner";
+
+				$timeout(function () {
+					$scope.isLoadingSMStatus = "showerror";
+
+					$timeout(function () {
+						$scope.isLoadingSMStatus = "reset";
+					}, 2000);
+				}, 2000);
+			}
+
+			$scope.onIsLoadingClicked = function () {
+				$scope.isLoadingStatus = "showspinner";
+
+				$timeout(function () {
+					$scope.showError = !$scope.showError;
+					if ($scope.showError)
+						$scope.isLoadingStatus = "showerror";
+					else
+						$scope.isLoadingStatus = "showok";
+				}, 900);
+			}
+
+			$scope.onIsLoadingLGClicked = function () {
+				$scope.isLoadingLGStatus = "showspinner";
+
+				$timeout(function () {
+					$scope.showError = !$scope.showError;
+					if ($scope.showError) {
+						$scope.isLoadingLGStatus = "showerror";
 						$timeout(function () {
-							$scope.isLoadingXSStatus = "showok";
-						}, 2000);
-					}
-
-					$scope.onIsLoadingSMClicked = function () {
-						$scope.isLoadingSMStatus = "showspinner";
-
-						$timeout(function () {
-							$scope.isLoadingSMStatus = "showerror";
-
-							$timeout(function () {
-								$scope.isLoadingSMStatus = "reset";
-							}, 2000);
-						}, 2000);
-					}
-
-					$scope.onIsLoadingClicked = function () {
-						$scope.isLoadingStatus = "showspinner";
-
-						$timeout(function () {
-							$scope.showError = !$scope.showError;
-							if ($scope.showError)
-								$scope.isLoadingStatus = "showerror";
-							else
-								$scope.isLoadingStatus = "showok";
-						}, 900);
-					}
-
-					$scope.onIsLoadingLGClicked = function () {
-						$scope.isLoadingLGStatus = "showspinner";
-
-						$timeout(function () {
-							$scope.showError = !$scope.showError;
-							if ($scope.showError) {
-								$scope.isLoadingLGStatus = "showerror";
-								$timeout(function () {
-									$scope.isLoadingLGStatus = null;
-								}, 3000);
-							}
-							else
-								$scope.isLoadingLGStatus = "showok";
+							$scope.isLoadingLGStatus = null;
 						}, 3000);
 					}
+					else
+						$scope.isLoadingLGStatus = "showok";
+				}, 3000);
+			}
 
-				}]);
+		}]);
 
-				app.controller('slgPleaseWaitTestCtrl', ['$scope', '$timeout', 'slgPleaseWaitSvc', function ($scope, $timeout, slgPleaseWaitSvc) {
-					$scope.showPleaseWait = function () {
-						slgPleaseWaitSvc.show();
+		app.controller('slgPleaseWaitTestCtrl', ['$scope', '$timeout', 'slgPleaseWaitSvc', function ($scope, $timeout, slgPleaseWaitSvc) {
+			$scope.showPleaseWait = function () {
+				slgPleaseWaitSvc.show();
 
-						$timeout(function () {
-							slgPleaseWaitSvc.show();
+				$timeout(function () {
+					slgPleaseWaitSvc.show();
 
-							$timeout(function () {
-								slgPleaseWaitSvc.hide();
-							}, 1000);
+					$timeout(function () {
+						slgPleaseWaitSvc.hide();
+					}, 1000);
 
-						}, 1000)
+				}, 1000)
 
-						$timeout(function () {
-							slgPleaseWaitSvc.hide();
-						}, 5000)
-					}
+				$timeout(function () {
+					slgPleaseWaitSvc.hide();
+				}, 5000)
+			}
 
-					$scope.showForcePleaseWait = function () {
-						slgPleaseWaitSvc.forceShow();
+			$scope.showForcePleaseWait = function () {
+				slgPleaseWaitSvc.forceShow();
 
-						$timeout(function () {
-							slgPleaseWaitSvc.forceHide();
-						}, 5000)
-					}
+				$timeout(function () {
+					slgPleaseWaitSvc.forceHide();
+				}, 5000)
+			}
 
-					$scope.showPleaseWaitWithForceStop = function () {
-						slgPleaseWaitSvc.show();
-						slgPleaseWaitSvc.show();
-						slgPleaseWaitSvc.show();
+			$scope.showPleaseWaitWithForceStop = function () {
+				slgPleaseWaitSvc.show();
+				slgPleaseWaitSvc.show();
+				slgPleaseWaitSvc.show();
 
-						$timeout(function () {
-							slgPleaseWaitSvc.forceHide();
-						}, 5000)
+				$timeout(function () {
+					slgPleaseWaitSvc.forceHide();
+				}, 5000)
 
-					}
-				}]);
+			}
+		}]);
 
-				app.controller('slgScrollableViewTestCtrl', ['$scope', '$timeout', function ($scope, $timeout) {
-					$scope.items = [
-						{ id: '1', text: 'One', someOtherVal: 'Blarg' },
-						{ id: '2', text: 'Two', someOtherVal: 'Bloog' },
-						{ id: '3', text: 'Three', someOtherVal: 'Blerf' },
-						{ id: '4', text: 'Four', someOtherVal: 'Blam' }
-					]
-				}]);
+		app.controller('slgScrollableViewTestCtrl', ['$scope', '$timeout', function ($scope, $timeout) {
+			$scope.items = [
+				{ id: '1', text: 'One', someOtherVal: 'Blarg' },
+				{ id: '2', text: 'Two', someOtherVal: 'Bloog' },
+				{ id: '3', text: 'Three', someOtherVal: 'Blerf' },
+				{ id: '4', text: 'Four', someOtherVal: 'Blam' }
+			]
+		}]);
 
-				app.controller('slgDropdownTestCtrl', ['$scope', '$timeout', function ($scope, $timeout) {
-					$scope.items = [
-						{ id: '1', text: 'One' },
-						{ id: '2', text: 'Two' },
-						{ id: '3', text: 'Three' },
-						{ id: '4', text: 'Four' }
-					]
-				}]);
+		app.controller('slgDropdownTestCtrl', ['$scope', '$timeout', function ($scope, $timeout) {
+			$scope.items = [
+				{ id: '1', text: 'One' },
+				{ id: '2', text: 'Two' },
+				{ id: '3', text: 'Three' },
+				{ id: '4', text: 'Four' }
+			]
+		}]);
 
-			</script>
+	</script>
 </body>
 
 </html>

@@ -6,7 +6,7 @@ angular.module('slgComponents')
 			ngModel: "=",
 			selectedModel: "=?slgAutoCompleteSelectedModel",
 			getUrl: "@?slgAutoCompleteGetUrl",
-			dataList: "=?slgAutoCompleteDataList",
+			items: "=?slgAutoCompleteItems",
 			minChars: "=?slgAutoCompleteMinChars",
 			allowFreeFormText: "=?slgAutoCompleteAllowFreeFormText",
 			delay: "=?slgAutoCompleteDelay",
@@ -81,8 +81,9 @@ angular.module('slgComponents')
 					if (scope.allowFreeFormText === true) {
 					}
 					else {
-						if (scope.selectedModel)
+						if (scope.selectedModel) {
 							scope.ngModel = scope.textboxFormatter({ item: scope.selectedModel });
+						}
 						else {
 							scope.ngModel = null;
 						}
@@ -251,8 +252,9 @@ angular.module('slgComponents')
 				$scope.visible = false;
 
 				if (idx === -1 || (!$scope.visibleItems || $scope.visibleItems.length === 0)) {
-					if ($scope.selectedModel && $scope.textboxFormatter)
+					if ($scope.selectedModel && $scope.textboxFormatter) {
 						$scope.ngModel = $scope.textboxFormatter({ item: $scope.selectedModel });
+					}
 					else
 						$scope.ngModel = null;
 
@@ -273,13 +275,14 @@ angular.module('slgComponents')
 						$scope.ngModel = null;
 				}
 				else {
-					if ($scope.textboxFormatter)
+					if ($scope.textboxFormatter) {
 						$scope.ngModel = $scope.textboxFormatter({ item: $scope.selectedModel });
+					}
 				}
 			});
 
-			$scope.$watch('dataList', function () {
-				$scope.allItems = $scope.dataList;
+			$scope.$watch('items', function () {
+				$scope.allItems = $scope.items;
 			});
 
 			$scope.refreshList = function () {
@@ -300,6 +303,8 @@ angular.module('slgComponents')
 
 					$scope.formattedItems = [];
 
+					var exactMatchAtFirstItems = [];
+					var exactMatchAtFirstListItems = [];
 					var exactMatchItems = [];
 					var exactMatchListItems = [];
 					var partialMatchItems = [];
@@ -320,13 +325,24 @@ angular.module('slgComponents')
 								if (hasSingleQuote)
 									length++;
 
-								var exactMatchStringStart = formattedString.substring(0, index);
-								var exactMatchStringMiddle = formattedString.substring(index, index + length);
-								var exactMatchStringEnd = formattedString.substring(index + length, formattedString.length);
+								if (index === 0) {
+									var exactMatchAtFirstStringStart = formattedString.substring(0, index);
+									var exactMatchAtFirstStringMiddle = formattedString.substring(index, index + length);
+									var exactMatchAtFirstStringEnd = formattedString.substring(index + length, formattedString.length);
 
-								var exactMatchString = exactMatchStringStart + "<span class='slgAutoCompleteHighlight'>" + exactMatchStringMiddle + "</span>" + exactMatchStringEnd;
-								exactMatchItems.push(item);
-								exactMatchListItems.push(exactMatchString);
+									var exactMatchAtFirstString = exactMatchAtFirstStringStart + "<span class='slgAutoCompleteHighlight'>" + exactMatchAtFirstStringMiddle + "</span>" + exactMatchAtFirstStringEnd;
+									exactMatchAtFirstItems.push(item);
+									exactMatchAtFirstListItems.push(exactMatchAtFirstString);
+								}
+								else {
+									var exactMatchStringStart = formattedString.substring(0, index);
+									var exactMatchStringMiddle = formattedString.substring(index, index + length);
+									var exactMatchStringEnd = formattedString.substring(index + length, formattedString.length);
+
+									var exactMatchString = exactMatchStringStart + "<span class='slgAutoCompleteHighlight'>" + exactMatchStringMiddle + "</span>" + exactMatchStringEnd;
+									exactMatchItems.push(item);
+									exactMatchListItems.push(exactMatchString);
+								}
 							}
 							else {
 								var searchTerms = $scope.searchText.toLowerCase().split(' ');
@@ -400,8 +416,17 @@ angular.module('slgComponents')
 						}
 					});
 
+					$scope.visibleItems = $scope.visibleItems.concat(exactMatchAtFirstItems);
 					$scope.visibleItems = $scope.visibleItems.concat(exactMatchItems);
 					$scope.visibleItems = $scope.visibleItems.concat(partialMatchItems);
+
+
+					angular.forEach(exactMatchAtFirstListItems, function (item) {
+						$scope.visibleListItems.push({
+							id: slgGuid(),
+							text: item
+						});
+					})
 
 					angular.forEach(exactMatchListItems, function (item) {
 						$scope.visibleListItems.push({
@@ -450,8 +475,8 @@ angular.module('slgComponents')
 				if ($scope.searchText.length < $scope.minChars)
 					return $q.when($scope.allItems);
 
-				if ($scope.dataList)
-					return $q.when($scope.dataList);
+				if ($scope.items)
+					return $q.when($scope.items);
 
 				else if ($scope.getUrl) {
 					var deferred = $q.defer();

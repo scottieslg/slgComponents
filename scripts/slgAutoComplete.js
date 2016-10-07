@@ -6,7 +6,7 @@
 			ngModel: "=",
 			selectedModel: "=?slgAutoCompleteSelectedModel",
 			getUrl: "@?slgAutoCompleteGetUrl",
-			dataList: "=?slgAutoCompleteDataList",
+			items: "=?slgAutoCompleteItems",
 			minChars: "=?slgAutoCompleteMinChars",
 			allowFreeFormText: "=?slgAutoCompleteAllowFreeFormText",
 			delay: "=?slgAutoCompleteDelay",
@@ -62,7 +62,7 @@
 
 			document.addEventListener('click', hideList, false);
 			function hideList(e) {
-				$timeout(function() {
+				$timeout(function () {
 					var el = angular.element(e.target);
 
 					// If they clicked on this textbox, don't hide the list
@@ -81,8 +81,9 @@
 					if (scope.allowFreeFormText === true) {
 					}
 					else {
-						if (scope.selectedModel)
+						if (scope.selectedModel) {
 							scope.ngModel = scope.textboxFormatter({ item: scope.selectedModel });
+						}
 						else {
 							scope.ngModel = null;
 						}
@@ -100,7 +101,7 @@
 			element.after(compiled);
 
 			element.bind('keydown', function (e) {
-				$timeout(function() {
+				$timeout(function () {
 					// down arrow
 					if (e.which === 40) {
 						if (!scope.visibleListItems || scope.visibleItems.length === 0)
@@ -164,7 +165,6 @@
 
 						scope.delayTimeout = $timeout(function () {
 							scope.delayTimeout = null;
-							scope.searchText = scope.ngModel;
 
 							scope.refreshList();
 						}, scope.delay);
@@ -204,14 +204,13 @@
 
 				scope.delayTimeout = $timeout(function () {
 					scope.delayTimeout = null;
-					scope.searchText = scope.ngModel;
 
 					scope.refreshList();
 				}, scope.delay);
 			});
 
 			element.bind('focus', function (e) {
-				$timeout(function() {
+				$timeout(function () {
 					scope.selectFirstItemAfterLoad = false;
 
 					if (!scope.visibleListItems || scope.visibleItems.length === 0)
@@ -251,8 +250,9 @@
 				$scope.visible = false;
 
 				if (idx === -1 || (!$scope.visibleItems || $scope.visibleItems.length === 0)) {
-					if ($scope.selectedModel && $scope.textboxFormatter)
+					if ($scope.selectedModel && $scope.textboxFormatter) {
 						$scope.ngModel = $scope.textboxFormatter({ item: $scope.selectedModel });
+					}
 					else
 						$scope.ngModel = null;
 
@@ -273,46 +273,48 @@
 						$scope.ngModel = null;
 				}
 				else {
-					if ($scope.textboxFormatter)
+					if ($scope.textboxFormatter) {
 						$scope.ngModel = $scope.textboxFormatter({ item: $scope.selectedModel });
+					}
 				}
 			});
 
-			$scope.$watch('dataList', function () {
-				$scope.allItems = $scope.dataList;
+			$scope.$watch('items', function () {
+				$scope.allItems = $scope.items;
 			});
 
 			$scope.refreshList = function () {
 				$scope.visibleItems = [];
 				$scope.visibleListItems = [];
 
-				if (!$scope.ngModel || $scope.ngModel === '') {
+				var searchText = document.getElementById($scope.textboxId).value;
+
+				if (!searchText || searchText === '') {
 					$scope.visible = false;
 					$scope.selectedModel = null;
 					return;
 				}
 
-				if (!$scope.searchText || $scope.searchText === '')
-					return;
-
-				getItems().then(function (items) {
+				getItems(searchText).then(function (items) {
 					$scope.allItems = items;
 
 					$scope.formattedItems = [];
 
+					var exactMatchAtFirstItems = [];
+					var exactMatchAtFirstListItems = [];
 					var exactMatchItems = [];
 					var exactMatchListItems = [];
 					var partialMatchItems = [];
 					var partialMatchListItems = [];
-					var searchTerms = $scope.searchText.split(' ');
+					var searchTerms = searchText.split(' ');
 
 					angular.forEach($scope.allItems, function (item) {
 						if ($scope.listFormatter) {
 							var formattedString = $scope.listFormatter({ item: item });
 
-							if (formattedString.replace(/["']/g, "").toLowerCase().indexOf($scope.searchText.replace(/["']/g, "").toLowerCase()) >= 0) {
-								var index = formattedString.replace(/["']/g, "").toLowerCase().indexOf($scope.searchText.toLowerCase());
-								var length = $scope.searchText.length;
+							if (formattedString.replace(/["']/g, "").toLowerCase().indexOf(searchText.replace(/["']/g, "").toLowerCase()) >= 0) {
+								var index = formattedString.replace(/["']/g, "").toLowerCase().indexOf(searchText.toLowerCase());
+								var length = searchText.length;
 
 								// see if there was a single quote
 								var hasSingleQuote = formattedString.substring(0, index + length + 1).indexOf("'") > 0;
@@ -320,16 +322,27 @@
 								if (hasSingleQuote)
 									length++;
 
-								var exactMatchStringStart = formattedString.substring(0, index);
-								var exactMatchStringMiddle = formattedString.substring(index, index + length);
-								var exactMatchStringEnd = formattedString.substring(index + length, formattedString.length);
+								if (index === 0) {
+									var exactMatchAtFirstStringStart = formattedString.substring(0, index);
+									var exactMatchAtFirstStringMiddle = formattedString.substring(index, index + length);
+									var exactMatchAtFirstStringEnd = formattedString.substring(index + length, formattedString.length);
 
-								var exactMatchString = exactMatchStringStart + "<span class='slgAutoCompleteHighlight'>" + exactMatchStringMiddle + "</span>" + exactMatchStringEnd;
-								exactMatchItems.push(item);
-								exactMatchListItems.push(exactMatchString);
+									var exactMatchAtFirstString = exactMatchAtFirstStringStart + "<span class='slgAutoCompleteHighlight'>" + exactMatchAtFirstStringMiddle + "</span>" + exactMatchAtFirstStringEnd;
+									exactMatchAtFirstItems.push(item);
+									exactMatchAtFirstListItems.push(exactMatchAtFirstString);
+								}
+								else {
+									var exactMatchStringStart = formattedString.substring(0, index);
+									var exactMatchStringMiddle = formattedString.substring(index, index + length);
+									var exactMatchStringEnd = formattedString.substring(index + length, formattedString.length);
+
+									var exactMatchString = exactMatchStringStart + "<span class='slgAutoCompleteHighlight'>" + exactMatchStringMiddle + "</span>" + exactMatchStringEnd;
+									exactMatchItems.push(item);
+									exactMatchListItems.push(exactMatchString);
+								}
 							}
 							else {
-								var searchTerms = $scope.searchText.toLowerCase().split(' ');
+								var searchTerms = searchText.toLowerCase().split(' ');
 
 								var highlightedString = ''
 
@@ -350,7 +363,7 @@
 											currentIndex += 2;	// If we leave it at the current position, it will just keep finding the same item
 										}
 										else {
-											highlightPositions.push({ index: currentIndex, length: searchTerm.length  });
+											highlightPositions.push({ index: currentIndex, length: searchTerm.length });
 											currentIndex++;	// If we leave it at the current position, it will just keep finding the same item
 										}
 									}
@@ -400,8 +413,17 @@
 						}
 					});
 
+					$scope.visibleItems = $scope.visibleItems.concat(exactMatchAtFirstItems);
 					$scope.visibleItems = $scope.visibleItems.concat(exactMatchItems);
 					$scope.visibleItems = $scope.visibleItems.concat(partialMatchItems);
+
+
+					angular.forEach(exactMatchAtFirstListItems, function (item) {
+						$scope.visibleListItems.push({
+							id: slgGuid(),
+							text: item
+						});
+					})
 
 					angular.forEach(exactMatchListItems, function (item) {
 						$scope.visibleListItems.push({
@@ -424,7 +446,7 @@
 					if ($scope.allowFreeFormText == true) {
 						$scope.selectedIndex = -1;
 						var activeElement = angular.element(document.activeElement);
-						if (activeElement.attr('id') !== $scope.textboxId) 
+						if (activeElement.attr('id') !== $scope.textboxId)
 							$scope.visible = false;
 
 						return;
@@ -446,12 +468,12 @@
 				})
 			}
 
-			function getItems() {
-				if ($scope.searchText.length < $scope.minChars)
+			function getItems(searchText) {
+				if (searchText.length < $scope.minChars)
 					return $q.when($scope.allItems);
 
-				if ($scope.dataList)
-					return $q.when($scope.dataList);
+				if ($scope.items)
+					return $q.when($scope.items);
 
 				else if ($scope.getUrl) {
 					var deferred = $q.defer();
@@ -460,9 +482,9 @@
 
 					var url = $scope.getUrl;
 					if (url.indexOf("?") > 0)
-						url += "&searchText=" + $scope.searchText;
+						url += "&searchText=" + searchText;
 					else
-						url += "?searchText=" + $scope.searchText;
+						url += "?searchText=" + searchText;
 
 					$http.get(url)
 					    .then(function (response) {
