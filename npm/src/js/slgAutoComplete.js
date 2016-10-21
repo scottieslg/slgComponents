@@ -12,7 +12,9 @@ angular.module('slgComponents')
 			delay: "=?slgAutoCompleteDelay",
 			width: "@?slgAutoCompleteWidth",
 			height: "@?slgAutoCompleteHeight",
-			listFormatter: "&?slgAutoCompleteListFormatter",
+			ngMouseover: "&?",
+			listTextFormatter: "&?slgAutoCompleteListTextFormatter",
+			listHtmlFormatter: "&?slgAutoCompleteListHtmlFormatter",
 			textboxFormatter: "&?slgAutoCompleteTextboxFormatter"
 		},
 		require: 'ngModel',
@@ -93,7 +95,7 @@ angular.module('slgComponents')
 
 			var html =
 				"<ul ng-show='visible' ng-mouseout='selectedIndex = -1;' id='slgAutoComplete_{{$id}}' class='slgAutoComplete list-group'> " +
-				"	<li id='slg_{{$index}}' data-index='{{$index}}' ng-repeat='item in visibleListItems' class='list-group-item list-group-item-action' ng-class='{ \"active\" : selectedIndex === $index }' ng-click='onClick($index)' ng-bind-html='item.text | toTrusted'>{{item.text}}</li>" +
+				"	<li id='slg_{{$index}}' data-index='{{$index}}' ng-repeat='item in visibleListItems' ng-mouseover='onMouseOver()' class='list-group-item list-group-item-action' ng-class='{ \"active\" : selectedIndex === $index }' ng-click='onClick($index)' ng-bind-html='item.text | toTrusted'>{{item.text}}</li>" +
 				"</ul>";
 
 
@@ -243,7 +245,8 @@ angular.module('slgComponents')
 			$scope.visible = false;
 
 			$scope.onMouseOver = function (idx) {
-				$scope.selectedIndex = idx;
+				if ($scope.ngMouseover)
+					$scope.ngMouseover({ idx: idx, item: $scope.visibleItems[idx] });
 			}
 
 			$scope.onClick = function (idx) {
@@ -309,8 +312,8 @@ angular.module('slgComponents')
 					var searchTerms = searchText.split(' ');
 
 					angular.forEach($scope.allItems, function (item) {
-						if ($scope.listFormatter) {
-							var formattedString = $scope.listFormatter({ item: item });
+						if ($scope.listTextFormatter) {
+							var formattedString = $scope.listTextFormatter({ item: item });
 
 							if (formattedString.replace(/["']/g, "").toLowerCase().indexOf(searchText.replace(/["']/g, "").toLowerCase()) >= 0) {
 								var index = formattedString.replace(/["']/g, "").toLowerCase().indexOf(searchText.toLowerCase());
@@ -438,6 +441,12 @@ angular.module('slgComponents')
 							text: item
 						});
 					})
+
+					if ($scope.listHtmlFormatter) {
+						angular.forEach($scope.visibleListItems, function (li, idx) {
+							li.text = $scope.listHtmlFormatter({ html: li.text, item: $scope.visibleItems[idx] });
+						});
+					}
 
 					$scope.resize();
 					$scope.visible = $scope.visibleItems.length > 0;
