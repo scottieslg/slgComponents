@@ -15,7 +15,8 @@ gulp.task('js', function () {
 		'scripts/slgComponents.js',
 		'scripts/slgButtonSpinner.js',
 		'scripts/slgAutoComplete.js',
-		'scripts/slgPleaseWait.js'])
+		'scripts/slgPleaseWait.js',
+	    'scripts/slgTabs.js'])
 		.pipe(concat('slgComponents.min.js'))
 		.pipe(sourcemaps.init())
 		//.pipe(uglify())
@@ -27,7 +28,8 @@ gulp.task('css', function () {
 	return gulp.src(['content/slgComponents.css',
 		'content/slgButtonSpinner.css',
 		'content/slgAutoComplete.css',
-		'content/slgPleaseWait.css'])
+		'content/slgPleaseWait.css',
+	    'content/slgTabs.css'])
 		.pipe(concat('slgComponents.min.css'))
 		.pipe(uglifycss())
 		.pipe(gulp.dest('npm/dist/css'))

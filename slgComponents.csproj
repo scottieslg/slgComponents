@@ -74,6 +74,7 @@
     <Content Include="content\slgDropdown.css" />
     <Content Include="content\slgPleaseWait.css" />
     <Content Include="content\slgScrollableView.css" />
+    <Content Include="content\slgTabs.css" />
     <Content Include="fonts\fontawesome-webfont.svg" />
     <Content Include="gulpfile.js" />
     <Content Include="index.html" />
@@ -85,6 +86,7 @@
     <Content Include="scripts\slgDropdown.js" />
     <Content Include="scripts\slgPleaseWait.js" />
     <Content Include="scripts\slgScrollableView.js" />
+    <Content Include="scripts\slgTabs.js" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="package.json" />
