@@ -47,8 +47,10 @@ angular.module('slgComponents')
 
 						scope.okTimeout = $timeout(function () {
 							var okCheckDiv = document.getElementById("slgButtonSpinner_check_" + scope.$id);
-							okCheckDiv.style.display = "none";
-							collapse();
+							if (okCheckDiv) {
+								okCheckDiv.style.display = "none";
+								collapse();
+							}
 						}, 3000);
 
 						break;
@@ -266,6 +268,7 @@ angular.module('slgComponents')
 			}
 
 			scope.$on("$destroy", function () {
+				console.log("slgButtonSpinner.$destroy");
 				$timeout.cancel(scope.waitToShowSpinner);
 				$timeout.cancel(scope.okTimeout);
 			});

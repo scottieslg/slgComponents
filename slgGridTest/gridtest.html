@@ -1,0 +1,60 @@
+﻿<!DOCTYPE html>
+<html style="height: 100%; min-height: 100%;">
+<head>
+	<title>slgComponents Grid Test</title>
+	<link href="../content/font-awesome.css" rel="stylesheet" />
+	<link href="..//node_modules/bootstrap/dist/css/bootstrap.css" rel="stylesheet" />
+	<!--<link href="content/bootstrap-overrides.css" rel="stylesheet" />-->
+	<link href="../content/slgComponents.css" rel="stylesheet" />
+	<link href="../content/slgAutoComplete.css" rel="stylesheet" />
+	<link href="../content/slgButtonSpinner.css" rel="stylesheet" />
+	<link href="../content/slgPleaseWait.css" rel="stylesheet" />
+	<link href="../content/slgScrollableView.css" rel="stylesheet" />
+	<link href="../content/slgDropdown.css" rel="stylesheet" />
+	<link href="../content/slgTabs.css" rel="stylesheet" />
+	<link href="../content/slgGrid.css" rel="stylesheet" />
+
+	<style>
+		[ng\:cloak], [ng-cloak], [data-ng-cloak], [x-ng-cloak], .ng-cloak, .x-ng-cloak {
+			display: none !important;
+		}
+	</style>
+</head>
+<body class="container" style="height: 100%; min-height: 100%;" ng-app="slgComponentsApp" ng-strict-di>
+	<div style="height: 100%; min-height: 100%;">
+		<slg-grid grid-line-template-url="/slgGridTest/gridLineTemplate.html"
+					detail-template-url="/slgGridTest/detailTemplate.html"
+					detail-expanded-template-url="/slgGridTest/detailExpandedTemplate.html"
+					items="displayItems">
+		</slg-grid>
+	</div>
+	<script src="//cdnjs.cloudflare.com/ajax/libs/angular.js/1.5.8/angular.js"></script>
+	<script src="../scripts/slgComponents.js"></script>
+	<script src="../scripts/slgAutoComplete.js"></script>
+	<script src="../scripts/slgButtonSpinner.js"></script>
+	<script src="../scripts/slgPleaseWait.js"></script>
+	<script src="../scripts/slgScrollableView.js"></script>
+	<script src="../scripts/slgDropdown.js"></script>
+	<script src="../scripts/slgTabs.js"></script>
+	<script src="../scripts/slgGrid.js"></script>
+
+	<script>
+        var app = angular.module('slgComponentsApp', [
+			'slgComponents'
+        ]);
+
+        app.controller("GridController", ['$scope', '$timeout', function ($scope, $timeout) {
+        	$scope.displayItems = [
+				{ firstName: 'Scott', lastName: 'Gines' },
+				{ firstName: 'Tasha', lastName: 'Gines' },
+				{ firstName: 'Zach', lastName: 'Gines' },
+				{ firstName: 'Jaycie', lastName: 'Gines' },
+				{ firstName: 'Porter', lastName: 'Nielson' }
+        	]
+
+        }]);
+
+	</script>
+</body>
+
+</html>
