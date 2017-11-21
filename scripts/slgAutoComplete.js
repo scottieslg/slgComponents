@@ -280,7 +280,7 @@
 					if ($scope.textboxFormatter) {
 						$scope.ngModel = $scope.textboxFormatter({ item: $scope.selectedModel });
 						if ($scope.onSelectCallback)
-							$scope.onSelectCallback({ item: $scope.ngModel });
+							$scope.onSelectCallback({ item: $scope.selectedModel });
 					}
 				}
 			});
