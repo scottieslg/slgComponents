@@ -15,7 +15,8 @@
 			ngMouseover: "&?",
 			listTextFormatter: "&?slgAutoCompleteListTextFormatter",
 			listHtmlFormatter: "&?slgAutoCompleteListHtmlFormatter",
-			textboxFormatter: "&?slgAutoCompleteTextboxFormatter"
+			textboxFormatter: "&?slgAutoCompleteTextboxFormatter",
+			onSelectCallback: "&?slgAutoCompleteOnSelect"
 		},
 		require: 'ngModel',
 		link: function (scope, element, attrs, ngModelCtrl) {
@@ -278,6 +279,8 @@
 				else {
 					if ($scope.textboxFormatter) {
 						$scope.ngModel = $scope.textboxFormatter({ item: $scope.selectedModel });
+						if ($scope.onSelectCallback)
+							$scope.onSelectCallback({ item: $scope.ngModel });
 					}
 				}
 			});
