@@ -256,6 +256,8 @@
 				if (idx === -1 || (!$scope.visibleItems || $scope.visibleItems.length === 0)) {
 					if ($scope.selectedModel && $scope.textboxFormatter) {
 						$scope.ngModel = $scope.textboxFormatter({ item: $scope.selectedModel });
+						if ($scope.onSelectCallback)
+							$scope.onSelectCallback({ item: $scope.selectedModel });
 					}
 					else
 						$scope.ngModel = null;
@@ -268,6 +270,8 @@
 
 				if ($scope.textboxFormatter) {
 					$scope.ngModel = $scope.textboxFormatter({ item: $scope.visibleItems[idx] });
+					if ($scope.onSelectCallback)
+						$scope.onSelectCallback({ item: $scope.selectedModel });
 				}
 			}
 
@@ -279,8 +283,6 @@
 				else {
 					if ($scope.textboxFormatter) {
 						$scope.ngModel = $scope.textboxFormatter({ item: $scope.selectedModel });
-						if ($scope.onSelectCallback)
-							$scope.onSelectCallback({ item: $scope.selectedModel });
 					}
 				}
 			});
