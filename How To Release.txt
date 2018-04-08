@@ -1,3 +1,6 @@
 ﻿Update the npm/package.json to the new version
 Update scripts/slgComponents.js to the new version
 In a command prompt, run gulp from the C:\Src\slgComponents folder
+If not logged in, use npm login.  Username: scottieslg, Pwd: i love peaches
+cd npm
+npm publish
