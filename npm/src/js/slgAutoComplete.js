@@ -484,7 +484,7 @@ angular.module('slgComponents')
 
 			function getItems(searchText) {
 				if (searchText.length < $scope.minChars)
-					return $q.when($scope.allItems);
+					return $q.when([]);
 
 				if ($scope.items)
 					return $q.when($scope.items);
@@ -501,14 +501,14 @@ angular.module('slgComponents')
 						url += "?searchText=" + searchText;
 
 					$http.get(url)
-					    .then(function (response) {
-					    	$scope.loadingData = false;
-					    	deferred.resolve(response.data);
-					    },
-						function (response) {
-							console.log(response);
-						}
-					);
+						.then(function (response) {
+							$scope.loadingData = false;
+							deferred.resolve(response.data);
+						},
+							function (response) {
+								console.log(response);
+							}
+						);
 
 					return deferred.promise;
 				}
